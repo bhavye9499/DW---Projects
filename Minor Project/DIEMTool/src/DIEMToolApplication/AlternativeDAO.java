@@ -1,20 +1,22 @@
 package DIEMToolApplication;
 
 import java.sql.*;
+import java.util.ArrayList;
 
-public class DecisionDAO extends DAO {
+public class AlternativeDAO extends DAO {
 
-	private static final String tableName = "Decision";
-	private String insertQuery = "INSERT INTO " + tableName + " VALUES (?, ?)";
+	private static final String tableName = "Alternative";
+	private String insertQuery = "INSERT INTO " + tableName + " VALUES (?, ?, ?)";
 	private String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = ?";
 
-	public void addDecision(Decision decision) {
+	public void addAlternative(Alternative alternative) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(insertQuery);
-			pst.setString(1, decision.getDecisionId());
-			pst.setString(2, decision.getDecisionName());
+			pst.setString(1, alternative.getAlternativeId());
+			pst.setString(2, alternative.getAlternativeDecisionId());
+			pst.setString(3, alternative.getAlternativeName());
 			pst.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -26,17 +28,17 @@ public class DecisionDAO extends DAO {
 		}
 	}
 
-	public Decision getDecision(int decisionId) {
+	public ArrayList<Alternative> getAlternatives(String decisionId) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
-		Decision decision = new Decision();
+		ArrayList<Alternative> alternatives = new ArrayList<>();
 		try {
 			pst = con.prepareStatement(selectQuery);
-			pst.setString(1, Decision.getDecisionCode() + decisionId);
+			pst.setString(1, decisionId);
 			ResultSet rs = pst.executeQuery();
-			rs.next();
-			decision.setDecisionId(Decision.getDecisionCode() + decisionId);
-			decision.setDecisionName(rs.getString("decision_name"));
+			while (rs.next()) {
+				alternatives.add(new Alternative(rs.getString("alternative_id"), rs.getString("decision_id"), rs.getString("alternative_name")));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -45,7 +47,7 @@ public class DecisionDAO extends DAO {
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
-		return decision;
+		return alternatives;
 	}
 
 	public static String getTableName() {

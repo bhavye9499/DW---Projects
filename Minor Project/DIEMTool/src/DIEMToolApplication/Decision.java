@@ -1,18 +1,24 @@
 package DIEMToolApplication;
 
 public class Decision {
+
 	private static final String decisionCode = "DEC";
-	private static int decisionCtr = Main.decisionDAO.getNumberOfDecisions();
+	private static int decisionCtr = Main.decisionDAO.getNumberOfRows("SELECT * FROM " + DecisionDAO.getTableName());
 	private String decisionId;
 	private String decisionName;
 
-	public Decision(String decisionName) {
+	public Decision() {}
+
+	public Decision(String name) {
 		decisionCtr++;
 		decisionId = decisionCode + decisionCtr;
-		this.decisionName = decisionName;
+		decisionName = name;
 	}
 
-	public Decision() {}
+	public Decision(String[] arr) {
+		decisionId = decisionCode + arr[0];
+		decisionName = arr[1];
+	}
 
 	public static String getDecisionCode() {
 		return decisionCode;

@@ -12,20 +12,23 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 	public static DecisionDAO decisionDAO;
+	public static AlternativeDAO alternativeDAO;
+	public static UncertaintyDAO uncertaintyDAO;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
 
 //		Creating DAOs
 		decisionDAO = new DecisionDAO();
+		alternativeDAO = new AlternativeDAO();
 
 //		Setting up MySQLLoginScreen and its scene
-    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
-    	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
-		String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
+//    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
+//    	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
+//		String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
 
 //		Initializing Java DataBase Connectivity
-    	JDBC.init(credentials[0], credentials[1]);	// user, pass
+    	JDBC.init("bhavye", "pass@Bhavye99");	// user, pass
 
 //		Setting up MySQLLoginScreen and its scene
     	HomeScreen.init("../HomeScreen/HomeScreen.fxml", primaryStage, "DIEM Tool");
