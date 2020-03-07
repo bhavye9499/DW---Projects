@@ -1,11 +1,10 @@
 package DIEMToolApplication;
 
-import MySQLLoginScreen.MySQLLoginScreen;
+import DAO.*;
 import HomeScreen.HomeScreen;
 import AddDecisionScreen.AddDecisionScreen;
 import AddNodesScreen.AddNodesScreen;
 import javafx.application.Application;
-import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ public class Main extends Application {
 	public static UncertaintyDAO uncertaintyDAO;
 	public static ObjectiveDAO objectiveDAO;
 	public static ActionDAO actionDAO;
+	public static AttributeDAO attributeDAO;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,6 +27,7 @@ public class Main extends Application {
 		uncertaintyDAO = new UncertaintyDAO();
 		objectiveDAO = new ObjectiveDAO();
 		actionDAO = new ActionDAO();
+		attributeDAO = new AttributeDAO();
 
 //		Setting up MySQLLoginScreen and its scene
 //    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");

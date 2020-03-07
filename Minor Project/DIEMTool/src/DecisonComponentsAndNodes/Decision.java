@@ -1,9 +1,12 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
+
+import DAO.DecisionDAO;
+import DIEMToolApplication.Main;
 
 public class Decision {
 
 	private static final String decisionCode = "DEC";
-	private static int decisionCtr = Main.decisionDAO.getNumberOfRows("SELECT * FROM " + DecisionDAO.getTableName());
+	private static int decisionCtr = Main.decisionDAO.getListOfRecordIds("SELECT * FROM " + DecisionDAO.getTableName(), Decision.getDecisionCode().length()).size();
 	private String decisionId;
 	private String decisionName;
 

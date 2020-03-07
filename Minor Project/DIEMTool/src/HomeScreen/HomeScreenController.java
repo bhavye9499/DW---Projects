@@ -2,7 +2,9 @@ package HomeScreen;
 
 import AddDecisionScreen.AddDecisionScreen;
 import AddNodesScreen.AddNodesScreen;
+import DAO.DecisionDAO;
 import DIEMToolApplication.*;
+import DecisonComponentsAndNodes.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,14 +33,6 @@ public class HomeScreenController implements Initializable {
 
 //		Loading the decisions from database
 		loadDecisions();
-	}
-
-	private void loadDecisions() {
-		int numDecisions = Main.decisionDAO.getNumberOfRows("SELECT * FROM " + DecisionDAO.getTableName());
-		for (int i = 1; i <= numDecisions; i++) {
-			Decision decision = Main.decisionDAO.getDecision(i);
-			decisionListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
-		}
 	}
 
 	private void setupAddMenuButton() {
@@ -146,7 +140,66 @@ public class HomeScreenController implements Initializable {
 	}
 
 	private void setupDeleteMenuButton() {
+//		Creating and Adding a MenuItem - Decision
+		MenuItem deleteDecision = new MenuItem("Decision");
+		deleteDecision.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			Main.decisionDAO.deleteDecision(decision.getDecisionId());
+			loadDecisions();
+		});
+		deleteMenuButton.getItems().add(deleteDecision);
 
+//		Creating and Adding a MenuItem - Alternative
+		MenuItem deleteAlternative = new MenuItem("Alternative");
+		deleteAlternative.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			ArrayList<String[]> alternatives = getSelectedComponents();
+			for (String[] alternative : alternatives) {
+				Main.alternativeDAO.deleteAlternative(Alternative.getAlternativeCode() + alternative[0]);
+			}
+			displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+		});
+		deleteMenuButton.getItems().add(deleteAlternative);
+
+//		Creating and Adding a MenuItem - Uncertainty
+		MenuItem deleteUncertainty = new MenuItem("Uncertainty");
+		deleteUncertainty.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			ArrayList<String[]> uncertainties = getSelectedComponents();
+			for (String[] uncertainty : uncertainties) {
+				Main.uncertaintyDAO.deleteUncertainty(Uncertainty.getUncertaintyCode() + uncertainty[0]);
+			}
+			displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+		});
+		deleteMenuButton.getItems().add(deleteUncertainty);
+
+//		Creating and Adding a MenuItem - Action
+		MenuItem deleteAction = new MenuItem("Action");
+		deleteAction.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			ArrayList<String[]> actions = getSelectedComponents();
+			for (String[] action : actions) {
+				Main.actionDAO.deleteAction(Action.getActionCode() + action[0]);
+			}
+			displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+		});
+		deleteMenuButton.getItems().add(deleteAction);
+
+//		Creating and Adding a MenuItem - Objective
+		MenuItem deleteObjective = new MenuItem("Objective");
+		deleteObjective.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			ArrayList<String[]> objectives = getSelectedComponents();
+			for (String[] objective : objectives) {
+				Main.objectiveDAO.deleteObjective(Objective.getObjectiveCode() + objective[0]);
+			}
+			displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+		});
+		deleteMenuButton.getItems().add(deleteObjective);
+
+//		Creating and Adding a MenuItem - Attribute
+		MenuItem deleteAttribute = new MenuItem("Attribute");
+		deleteMenuButton.getItems().add(deleteAttribute);
 	}
 
 	private void displayComponents(String decisionId, String componentName, int componentCodeLenth) {
@@ -170,9 +223,27 @@ public class HomeScreenController implements Initializable {
 		}
 	}
 
+	private void loadDecisions() {
+		decisionListView.getItems().clear();
+		ArrayList<Integer> decisionIds = Main.decisionDAO.getListOfRecordIds("SELECT * FROM " + DecisionDAO.getTableName(), Decision.getDecisionCode().length());
+		for (int i : decisionIds) {
+			Decision decision = Main.decisionDAO.getDecision(i);
+			decisionListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
+		}
+	}
+
 	private Decision getSelectedDecision() {
 		ObservableList<String> decisions = decisionListView.getSelectionModel().getSelectedItems();
 		return new Decision(decisions.get(0).split(" - "));
+	}
+
+	private ArrayList<String[]> getSelectedComponents() {
+		ObservableList<String> components = componentListView.getSelectionModel().getSelectedItems();
+		ArrayList<String[]> splittedComponents = new ArrayList<>();
+		for (String component : components) {
+			splittedComponents.add(component.split(" - "));
+		}
+		return splittedComponents;
 	}
 
 }

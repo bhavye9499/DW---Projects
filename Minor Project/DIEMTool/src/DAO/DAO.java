@@ -1,4 +1,7 @@
-package DIEMToolApplication;
+package DAO;
+
+import DIEMToolApplication.JDBC;
+import DecisonComponentsAndNodes.DecisionComponent;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,14 +17,14 @@ public class DAO {
 		return con;
 	}
 
-	public int getNumberOfRows(String query) {
+	public ArrayList<Integer> getListOfRecordIds(String query, int codeLength) {
 		Connection con = getConnection();
 		Statement st = null;
-		int count = 0;
+		ArrayList<Integer> ids = new ArrayList<>();
 		try {
 			st = con.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			while (rs.next()) count++;
+			while (rs.next()) ids.add(Integer.parseInt(rs.getString(1).substring(codeLength)));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -30,7 +33,7 @@ public class DAO {
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
-		return count;
+		return ids;
 	}
 
 	public void addComponents(DecisionComponent component, String insertQuery) {
@@ -74,7 +77,20 @@ public class DAO {
 		return components;
 	}
 
-	public void deleteComponents(String decisionId, String deleteQuery, String componentName) {
-
+	public void deleteComponents(String componentId, String deleteQuery) {
+		Connection con = getConnection();
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(deleteQuery);
+			pst.setString(1, componentId);
+			pst.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) pst.close();
+				if (con != null) con.close();
+			} catch (Exception e) { e.printStackTrace(); }
+		}
 	}
 }

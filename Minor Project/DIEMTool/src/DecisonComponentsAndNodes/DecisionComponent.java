@@ -1,10 +1,10 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
 
 public class DecisionComponent {
 
-	protected String componentId;
-	protected String componentDecisionId;
-	protected String componentName;
+	private String componentId;
+	private String componentDecisionId;
+	private String componentName;
 
 	public DecisionComponent() {}
 

@@ -1,9 +1,12 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
+
+import DAO.ActionDAO;
+import DIEMToolApplication.Main;
 
 public class Action extends DecisionComponent {
 
 	private static final String actionCode = "ACT";
-	private static int actionCtr = Main.actionDAO.getNumberOfRows("SELECT * FROM " + ActionDAO.getTableName());
+	private static int actionCtr = Main.actionDAO.getListOfRecordIds("SELECT * FROM " + ActionDAO.getTableName(), Action.getActionCode().length()).size();
 
 	public Action() {}
 

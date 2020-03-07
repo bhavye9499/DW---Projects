@@ -1,9 +1,12 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
+
+import DIEMToolApplication.Main;
+import DAO.ObjectiveDAO;
 
 public class Objective extends DecisionComponent {
 
 	private static final String objectiveCode = "OBJ";
-	private static int objectiveCtr = Main.objectiveDAO.getNumberOfRows("SELECT * FROM " + ObjectiveDAO.getTableName());
+	private static int objectiveCtr = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).size();
 
 	public Objective() {}
 

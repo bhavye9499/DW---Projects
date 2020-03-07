@@ -1,9 +1,12 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
+
+import DIEMToolApplication.Main;
+import DAO.UncertaintyDAO;
 
 public class Uncertainty extends DecisionComponent {
 
 	private static final String uncertaintyCode = "UNC";
-	private static int uncertaintyCtr = Main.uncertaintyDAO.getNumberOfRows("SELECT * FROM " + UncertaintyDAO.getTableName());
+	private static int uncertaintyCtr = Main.uncertaintyDAO.getListOfRecordIds("SELECT * FROM " + UncertaintyDAO.getTableName(), Uncertainty.getUncertaintyCode().length()).size();
 
 	public Uncertainty() {}
 

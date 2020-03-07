@@ -1,9 +1,12 @@
-package DIEMToolApplication;
+package DecisonComponentsAndNodes;
+
+import DAO.AlternativeDAO;
+import DIEMToolApplication.Main;
 
 public class Alternative extends DecisionComponent {
 
 	private static final String alternativeCode = "ALT";
-	private static int alternativeCtr = Main.alternativeDAO.getNumberOfRows("SELECT * FROM " + AlternativeDAO.getTableName());
+	private static int alternativeCtr = Main.alternativeDAO.getListOfRecordIds("SELECT * FROM " + AlternativeDAO.getTableName(), Alternative.getAlternativeCode().length()).size();
 
 	public Alternative() {}
 
