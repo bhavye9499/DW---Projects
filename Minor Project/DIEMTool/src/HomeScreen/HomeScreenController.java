@@ -19,7 +19,6 @@ public class HomeScreenController implements Initializable {
 
 	@FXML private MenuButton addMenuButton, viewButton, deleteButton;
 	@FXML private ListView<String> decisionsListView, objectsListView, attributesListView;
-	private ObservableList<MenuItem> addMenuItems;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -27,12 +26,16 @@ public class HomeScreenController implements Initializable {
 		objectsListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		attributesListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
-		//		Creating and Adding a MenuItem - Decision
+//		Loading the decisions from database
+		loadDecisions();
+
+//		Creating and Adding a MenuItem - Decision
 		MenuItem addDecision = new MenuItem("Decision");
 		addDecision.setOnAction(actionEvent -> {
 			String decisionName = AddDecisionScreen.getAddDecisionScreenController().display();
 			Decision decision = new Decision(decisionName);
-			decisionsListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getName());
+			Main.decisionDAO.addDecision(decision);
+			decisionsListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
 		});
 		addMenuButton.getItems().add(addDecision);
 
@@ -63,6 +66,13 @@ public class HomeScreenController implements Initializable {
 //		Creating and Adding a MenuItem - Attribute
 		MenuItem addAttribute = new MenuItem("Attribute");
 		addMenuButton.getItems().add(addAttribute);
+	}
 
+	private void loadDecisions() {
+		int numDecisions = Main.decisionDAO.getNumberOfDecisions();
+		for (int i = 1; i <= numDecisions; i++) {
+			Decision decision = Main.decisionDAO.getDecision(i);
+			decisionsListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
+		}
 	}
 }

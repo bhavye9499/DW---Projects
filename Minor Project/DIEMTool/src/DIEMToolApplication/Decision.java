@@ -1,29 +1,40 @@
 package DIEMToolApplication;
 
 public class Decision {
-	private static int decisionCtr = 0;
+	private static final String decisionCode = "DEC";
+	private static int decisionCtr = Main.decisionDAO.getNumberOfDecisions();
 	private String decisionId;
 	private String decisionName;
 
 	public Decision(String decisionName) {
 		decisionCtr++;
-		decisionId = "D" + decisionCtr;
+		decisionId = decisionCode + decisionCtr;
 		this.decisionName = decisionName;
+	}
+
+	public Decision() {}
+
+	public static String getDecisionCode() {
+		return decisionCode;
 	}
 
 	public String getDecisionId() {
 		return decisionId;
 	}
 
-	public int getIntDecisionId() {
-		return Integer.parseInt(decisionId.substring(1));	// character at index 0 is 'D'
+	public void setDecisionId(String id) {
+		decisionId = id;
 	}
 
-	public String getName() {
+	public String getDecisionName() {
 		return decisionName;
 	}
 
-	public void setName(String decisionName) {
-		this.decisionName = decisionName;
+	public void setDecisionName(String name) {
+		decisionName = name;
+	}
+
+	public int getIntDecisionId() {
+		return Integer.parseInt(decisionId.substring(decisionCode.length()));
 	}
 }
