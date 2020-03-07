@@ -5,6 +5,7 @@ import HomeScreen.HomeScreen;
 import AddDecisionScreen.AddDecisionScreen;
 import AddNodesScreen.AddNodesScreen;
 import javafx.application.Application;
+import javafx.beans.Observable;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -14,6 +15,8 @@ public class Main extends Application {
 	public static DecisionDAO decisionDAO;
 	public static AlternativeDAO alternativeDAO;
 	public static UncertaintyDAO uncertaintyDAO;
+	public static ObjectiveDAO objectiveDAO;
+	public static ActionDAO actionDAO;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -21,6 +24,9 @@ public class Main extends Application {
 //		Creating DAOs
 		decisionDAO = new DecisionDAO();
 		alternativeDAO = new AlternativeDAO();
+		uncertaintyDAO = new UncertaintyDAO();
+		objectiveDAO = new ObjectiveDAO();
+		actionDAO = new ActionDAO();
 
 //		Setting up MySQLLoginScreen and its scene
 //    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
