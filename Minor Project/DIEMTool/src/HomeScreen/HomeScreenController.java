@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class HomeScreenController implements Initializable {
 
-	@FXML private MenuButton addMenuButton, viewButton, deleteButton;
+	@FXML private MenuButton addMenuButton, viewMenuButton, deleteMenuButton;
 	@FXML private ListView<String> decisionListView, componentListView, attributeListView;
 	@FXML private Label componentLabel, attributeLabel;
 
@@ -23,10 +23,12 @@ public class HomeScreenController implements Initializable {
 		decisionListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		componentListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		attributeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
 //		Creating and Adding MenuItems for all the  MenuButton
 		setupAddMenuButton();
 		setupViewMenuButton();
 		setupDeleteMenuButton();
+
 //		Loading the decisions from database
 		loadDecisions();
 	}
@@ -44,9 +46,11 @@ public class HomeScreenController implements Initializable {
 		MenuItem addDecision = new MenuItem("Decision");
 		addDecision.setOnAction(actionEvent -> {
 			String decisionName = AddDecisionScreen.getAddDecisionScreenController().display();
-			Decision decision = new Decision(decisionName);
-			Main.decisionDAO.addDecision(decision);
-			decisionListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
+			if (decisionName != null) {
+				Decision decision = new Decision(decisionName);
+				Main.decisionDAO.addDecision(decision);
+				decisionListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getDecisionName());
+			}
 		});
 		addMenuButton.getItems().add(addDecision);
 
@@ -104,7 +108,41 @@ public class HomeScreenController implements Initializable {
 	}
 
 	private void setupViewMenuButton() {
+//		Creating and Adding a MenuItem - Alternative
+		MenuItem viewAlternative = new MenuItem("Alternative");
+		viewAlternative.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+		});
+		viewMenuButton.getItems().add(viewAlternative);
 
+//		Creating and Adding a MenuItem - Uncertainty
+		MenuItem viewUncertainty = new MenuItem("Uncertainty");
+		viewUncertainty.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+		});
+		viewMenuButton.getItems().add(viewUncertainty);
+
+//		Creating and Adding a MenuItem - Action
+		MenuItem viewAction = new MenuItem("Action");
+		viewAction.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+		});
+		viewMenuButton.getItems().add(viewAction);
+
+//		Creating and Adding a MenuItem - Objective
+		MenuItem viewObjective = new MenuItem("Objective");
+		viewObjective.setOnAction(actionEvent -> {
+			Decision decision = getSelectedDecision();
+			displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+		});
+		viewMenuButton.getItems().add(viewObjective);
+
+//		Creating and Adding a MenuItem - Attribute
+		MenuItem viewAttribute = new MenuItem("Attribute");
+		viewMenuButton.getItems().add(viewAttribute);
 	}
 
 	private void setupDeleteMenuButton() {
@@ -115,12 +153,16 @@ public class HomeScreenController implements Initializable {
 		componentListView.getItems().clear();
 		ArrayList<DecisionComponent> components = null;
 		if (componentName.equals("alternative")) {
+			componentLabel.setText("Alternatives");
 			components = Main.alternativeDAO.getAlternatives(decisionId);
 		} else if (componentName.equals("action")) {
+			componentLabel.setText("Actions");
 			components = Main.actionDAO.getActions(decisionId);
 		} else if (componentName.equals("uncertainty")) {
+			componentLabel.setText("Uncertainties");
 			components = Main.uncertaintyDAO.getUncertaintys(decisionId);
 		} else if (componentName.equals("objective")) {
+			componentLabel.setText("Objectives");
 			components = Main.objectiveDAO.getObjectives(decisionId);
 		}
 		for (int i = 0; i < components.size(); i++) {

@@ -13,7 +13,7 @@ public class AlternativeDAO extends DAO {
 	}
 
 	public ArrayList<DecisionComponent> getAlternatives(String decisionId) {
-		return getComponents(decisionId, selectQuery, "alternatives");
+		return getComponents(decisionId, selectQuery, "alternative");
 	}
 
 	public static String getTableName() {

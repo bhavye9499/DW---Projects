@@ -37,7 +37,7 @@ public class AddNodesScreenController implements Initializable {
 			AddNodesScreen.getAddNodesScreenStage().close();
 		});
 		cancelButton.setOnAction(actionEvent -> {
-			nodes = null;
+			nodes = new String[]{};
 			AddNodesScreen.getAddNodesScreenStage().close();
 		});
 	}

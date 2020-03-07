@@ -21,19 +21,12 @@
                         <Font size="15.0" />
                      </font>
                   </MenuButton>
-                  <MenuButton fx:id="viewButton" mnemonicParsing="false" text="View">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Alternatives" />
-                      <MenuItem mnemonicParsing="false" text="Uncertainties" />
-                        <MenuItem mnemonicParsing="false" text="Actions" />
-                        <MenuItem mnemonicParsing="false" text="Objectives" />
-                        <MenuItem mnemonicParsing="false" text="Attributes" />
-                    </items>
+                  <MenuButton fx:id="viewMenuButton" mnemonicParsing="false" text="View">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </MenuButton>
-                  <MenuButton fx:id="deleteButton" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" text="Delete">
+                  <MenuButton fx:id="deleteMenuButton" layoutX="15.0" layoutY="15.0" mnemonicParsing="false" text="Delete">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Decision" />
                         <MenuItem mnemonicParsing="false" text="Alternative" />
