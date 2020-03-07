@@ -1,44 +1,31 @@
 package DIEMToolApplication;
 
-import AddDecisionScreen.AddDecisionScreenController;
-import AddNodesScreen.AddNodesScreenController;
+import AddDecisionScreen.AddDecisionScreen;
+import AddNodesScreen.AddNodesScreen;
+import HomeScreen.HomeScreen;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	public static String homeScreenName, addDecisionScreenName, addNodesScreenName;
-	public static Parent homeScreenParent, addDecisionScreenParent, addNodesScreenParent;
-	public static Scene homeScreenScene, addDecisionScreenScene, addNodesScreenScene;
-	public static AddDecisionScreenController addDecisionScreenController;
-	public static AddNodesScreenController addNodesScreenController;
-	public static Stage homeScreenStage, addDecisionScreenStage, addNodesScreenStage;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-    	homeScreenName = "../HomeScreen/HomeScreen.fxml";
-    	homeScreenStage = primaryStage;
-    	homeScreenStage.setTitle("DIEM Toll");
-        homeScreenParent = FXMLLoader.load(getClass().getResource(homeScreenName));
-        homeScreenScene = new Scene(homeScreenParent);
 
-    	addDecisionScreenName = "../AddDecisionScreen/AddDecisionScreen.fxml";
-    	addDecisionScreenStage = new Stage();
-		addDecisionScreenStage.initModality(Modality.APPLICATION_MODAL);
-		addDecisionScreenStage.setTitle("Add Decision");
-        addDecisionScreenController = new AddDecisionScreenController();
+//		Setting up HomeScreen and its scene
+    	HomeScreen.init("../HomeScreen/HomeScreen.fxml", primaryStage, "DIEM Tool");
+    	HomeScreen.setHomeScreenScene(new Scene(FXMLLoader.load(getClass().getResource(HomeScreen.getHomeScreenName()))));
 
-        addNodesScreenName = "../AddNodesScreen/AddNodesScreen.fxml";
-    	addNodesScreenStage = new Stage();
-		addNodesScreenStage.initModality(Modality.APPLICATION_MODAL);
-        addNodesScreenController = new AddNodesScreenController();
+//		Setting up AddDecisionScreen
+    	AddDecisionScreen.init("../AddDecisionScreen/AddDecisionScreen.fxml", "Add Decision");
 
-        homeScreenStage.setScene(homeScreenScene);
-        homeScreenStage.show();
+//		Setting up AddNodesScreen
+    	AddNodesScreen.init("../AddNodesScreen/AddNodesScreen.fxml");
+
+//		Setting HomeScreenScene to HomeScreenStage and showing it
+        HomeScreen.getHomeScreenStage().setScene(HomeScreen.getHomeScreenScene());
+        HomeScreen.getHomeScreenStage().show();
     }
 
     public static void main(String[] args) {

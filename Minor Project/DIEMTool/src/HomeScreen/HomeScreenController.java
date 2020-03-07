@@ -1,5 +1,7 @@
 package HomeScreen;
 
+import AddDecisionScreen.AddDecisionScreen;
+import AddNodesScreen.AddNodesScreen;
 import DIEMToolApplication.Decision;
 import DIEMToolApplication.Main;
 import javafx.collections.ObservableList;
@@ -28,7 +30,7 @@ public class HomeScreenController implements Initializable {
 		//		Creating and Adding a MenuItem - Decision
 		MenuItem addDecision = new MenuItem("Decision");
 		addDecision.setOnAction(actionEvent -> {
-			String decisionName = Main.addDecisionScreenController.display();
+			String decisionName = AddDecisionScreen.getAddDecisionScreenController().display();
 			Decision decision = new Decision(decisionName);
 			decisionsListView.getItems().add(decision.getIntDecisionId() + " - " + decision.getName());
 		});
@@ -38,7 +40,7 @@ public class HomeScreenController implements Initializable {
 		MenuItem addAlternative = new MenuItem("Alternative");
 		addAlternative.setOnAction(actionEvent -> {
 			ObservableList<String> decisions = decisionsListView.getSelectionModel().getSelectedItems();
-			String[] alternatives = Main.addNodesScreenController.display("Add Alternative", "Decision", decisions.get(0).split(" - ")[1], "Alternative");
+			String[] alternatives = AddNodesScreen.getAddNodesScreenController().display("Add Alternative", "Decision", decisions.get(0).split(" - ")[1], "Alternative");
 		});
 		addMenuButton.getItems().add(addAlternative);
 
@@ -46,7 +48,7 @@ public class HomeScreenController implements Initializable {
 		MenuItem addUncertainty = new MenuItem("Uncertainty");
 		addUncertainty.setOnAction(actionEvent -> {
 			ObservableList<String> decisions = decisionsListView.getSelectionModel().getSelectedItems();
-			String[] uncertainties = Main.addNodesScreenController.display("Add Uncertainty", "Decision", decisions.get(0), "Uncertainty");
+			String[] uncertainties = AddNodesScreen.getAddNodesScreenController().display("Add Uncertainty", "Decision", decisions.get(0), "Uncertainty");
 		});
 		addMenuButton.getItems().add(addUncertainty);
 

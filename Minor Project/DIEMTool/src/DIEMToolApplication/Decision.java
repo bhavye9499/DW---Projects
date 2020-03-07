@@ -3,12 +3,12 @@ package DIEMToolApplication;
 public class Decision {
 	private static int decisionCtr = 0;
 	private String decisionId;
-	private String name;
+	private String decisionName;
 
-	public Decision(String name) {
+	public Decision(String decisionName) {
 		decisionCtr++;
 		decisionId = "D" + decisionCtr;
-		this.name = name;
+		this.decisionName = decisionName;
 	}
 
 	public String getDecisionId() {
@@ -20,10 +20,10 @@ public class Decision {
 	}
 
 	public String getName() {
-		return name;
+		return decisionName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String decisionName) {
+		this.decisionName = decisionName;
 	}
 }

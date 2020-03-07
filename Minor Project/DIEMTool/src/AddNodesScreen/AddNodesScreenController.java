@@ -1,6 +1,5 @@
 package AddNodesScreen;
 
-import DIEMToolApplication.Main;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -9,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -34,11 +34,11 @@ public class AddNodesScreenController implements Initializable {
 			} else {
 				nodes = new String[]{text};
 			}
-			Main.addNodesScreenStage.close();
+			AddNodesScreen.getAddNodesScreenStage().close();
 		});
 		cancelButton.setOnAction(actionEvent -> {
 			nodes = null;
-			Main.addNodesScreenStage.close();
+			AddNodesScreen.getAddNodesScreenStage().close();
 		});
 	}
 
@@ -47,12 +47,12 @@ public class AddNodesScreenController implements Initializable {
 		addNodeToLabelName = addNodeToName;
 		nodeToAddLabelName = nodeToAddName;
 		try {
-			Main.addNodesScreenParent = FXMLLoader.load(getClass().getResource(Main.addNodesScreenName));
+        	AddNodesScreen.setAddNodesScreenScene(new Scene(FXMLLoader.load(getClass().getResource(AddNodesScreen.getAddNodesScreenName()))));
 		} catch (Exception ignored) {}
-        Main.addNodesScreenScene = new Scene(Main.addNodesScreenParent);
-		Main.addNodesScreenStage.setScene(Main.addNodesScreenScene);
-		Main.addNodesScreenStage.setTitle(title);
-		Main.addNodesScreenStage.showAndWait();
+		Stage stage = AddNodesScreen.getAddNodesScreenStage();
+		stage.setScene(AddNodesScreen.getAddNodesScreenScene());
+		stage.setTitle(title);
+		stage.showAndWait();
 		return nodes;
 	}
 }
