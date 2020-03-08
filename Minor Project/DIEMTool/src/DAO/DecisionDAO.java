@@ -1,9 +1,8 @@
 package DAO;
 
-import DAO.DAO;
 import DIEMToolApplication.Main;
-import DecisonComponentsAndNodes.Decision;
-import DecisonComponentsAndNodes.DecisionComponent;
+import DecisonComponents.Decision;
+import DecisonComponents.DecisionComponent;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -77,7 +76,7 @@ public class DecisionDAO extends DAO {
 		}
 //		Finally deleting the decision
 		String deleteQuery = "DELETE FROM " + tableName + " WHERE decision_id = ?";
-		deleteComponents(decId, deleteQuery);
+		deleteNode(decId, deleteQuery);
 	}
 
 	public static String getTableName() {

@@ -1,8 +1,7 @@
 package DAO;
 
-import DAO.DAO;
-import DecisonComponentsAndNodes.DecisionComponent;
-import DecisonComponentsAndNodes.Objective;
+import DecisonComponents.DecisionComponent;
+import DecisonComponents.Objective;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public class ObjectiveDAO extends DAO {
 
 	public void addObjective(Objective objective) {
 		String insertQuery = "INSERT INTO " + tableName + " VALUES (?, ?, ?)";
-		addComponents(objective, insertQuery);
+		addComponent(objective, insertQuery);
 	}
 
 	public ArrayList<DecisionComponent> getObjectives(String decisionId) {
@@ -22,7 +21,7 @@ public class ObjectiveDAO extends DAO {
 
 	public void deleteObjective(String id) {
 		String deleteQuery = "DELETE FROM " + tableName + " WHERE objective_id = ?";
-		deleteComponents(id, deleteQuery);
+		deleteNode(id, deleteQuery);
 	}
 
 	public static String getTableName() {

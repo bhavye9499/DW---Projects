@@ -1,8 +1,7 @@
 package DAO;
 
-import DAO.DAO;
-import DecisonComponentsAndNodes.Action;
-import DecisonComponentsAndNodes.DecisionComponent;
+import DecisonComponents.Action;
+import DecisonComponents.DecisionComponent;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ public class ActionDAO extends DAO {
 
 	public void addAction(Action action) {
 		String insertQuery = "INSERT INTO " + tableName + " VALUES (?, ?, ?)";
-		addComponents(action, insertQuery);
+		addComponent(action, insertQuery);
 	}
 
 	public ArrayList<DecisionComponent> getActions(String decisionId) {
@@ -21,10 +20,10 @@ public class ActionDAO extends DAO {
 	}
 
 	public void deleteAction(String id) {
-		String deleteQuery1 = "DELETE FROM " + AttributeDAO.getActionAttributeTableName() + " WHERE action_id = ?";
+		String deleteQuery1 = "DELETE FROM " + ActionAttributeDAO.getActionAttributeTableName() + " WHERE action_id = ?";
 		String deleteQuery2 = "DELETE FROM " + tableName + " WHERE action_id = ?";
-		deleteComponents(id, deleteQuery1);
-		deleteComponents(id, deleteQuery2);
+		deleteNode(id, deleteQuery1);
+		deleteNode(id, deleteQuery2);
 	}
 
 	public static String getTableName() {

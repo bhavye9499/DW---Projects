@@ -2,9 +2,12 @@ package HomeScreen;
 
 import AddDecisionScreen.AddDecisionScreen;
 import AddNodesScreen.AddNodesScreen;
+import Attributes.ActionAttribute;
+import Attributes.Attribute;
+import Attributes.UncertaintyAttribute;
 import DAO.DecisionDAO;
 import DIEMToolApplication.*;
-import DecisonComponentsAndNodes.*;
+import DecisonComponents.*;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,6 +15,7 @@ import javafx.scene.control.*;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class HomeScreenController implements Initializable {
@@ -24,7 +28,7 @@ public class HomeScreenController implements Initializable {
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		decisionListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		componentListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		attributeListView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+		attributeListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
 //		Creating and Adding MenuItems for all the  MenuButton
 		setupAddMenuButton();
@@ -98,6 +102,33 @@ public class HomeScreenController implements Initializable {
 
 //		Creating and Adding a MenuItem - Attribute
 		MenuItem addAttribute = new MenuItem("Attribute");
+		addAttribute.setOnAction(actionEvent -> {
+			ArrayList<String[]> components = getSelectedComponents();
+			String componentId = null;
+			int attributeCodeLength = -1;
+			if (components.size() != 1) {
+				// TODO pop alert box
+			} else {
+				if (componentLabel.getText().equals("Actions")) {
+					componentId = Action.getActionCode() + components.get(0)[0];
+					String[] attributes = AddNodesScreen.getAddNodesScreenController().display("Add Attribute", "Action", components.get(0)[1], "Attribute");
+					for (String attribute : attributes) {
+						String[] splittedAttribute = attribute.split(",");
+						Main.actionAttributeDAO.addActionAttribute(new ActionAttribute(splittedAttribute[0], componentId, splittedAttribute[1]));
+					}
+					attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
+				} else if (componentLabel.getText().equals("Uncertainties")) {
+					componentId = Uncertainty.getUncertaintyCode() + components.get(0)[0];
+					String[] attributes = AddNodesScreen.getAddNodesScreenController().display("Add Attribute", "Uncertainty", components.get(0)[1], "Attribute");
+					for (String attribute : attributes) {
+						String[] splittedAttribute = attribute.split(",");
+						Main.uncertaintyAttributeDAO.addUncertaintyAttribute(new UncertaintyAttribute(splittedAttribute[0], componentId, splittedAttribute[1]));
+					}
+					attributeCodeLength = UncertaintyAttribute.getUncertaintyAttributeCode().length();
+				}
+				displayAttributes(componentId, attributeCodeLength);
+			}
+		});
 		addMenuButton.getItems().add(addAttribute);
 	}
 
@@ -136,6 +167,23 @@ public class HomeScreenController implements Initializable {
 
 //		Creating and Adding a MenuItem - Attribute
 		MenuItem viewAttribute = new MenuItem("Attribute");
+		viewAttribute.setOnAction(actionEvent -> {
+			ArrayList<String[]> components = getSelectedComponents();
+			String componentId = null;
+			int attributeCodeLength = -1;
+			if (components.size() != 1) {
+				// TODO pop alert box
+			} else {
+				if (componentLabel.getText().equals("Actions")) {
+					componentId = Action.getActionCode() + components.get(0)[0];
+					attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
+				} else if (componentLabel.getText().equals("Uncertainties")) {
+					componentId = Uncertainty.getUncertaintyCode() + components.get(0)[0];
+					attributeCodeLength = UncertaintyAttribute.getUncertaintyAttributeCode().length();
+				}
+				displayAttributes(componentId, attributeCodeLength);
+			}
+		});
 		viewMenuButton.getItems().add(viewAttribute);
 	}
 
@@ -146,6 +194,8 @@ public class HomeScreenController implements Initializable {
 			Decision decision = getSelectedDecision();
 			Main.decisionDAO.deleteDecision(decision.getDecisionId());
 			loadDecisions();
+			componentListView.getItems().clear();
+			attributeListView.getItems().clear();
 		});
 		deleteMenuButton.getItems().add(deleteDecision);
 
@@ -199,10 +249,32 @@ public class HomeScreenController implements Initializable {
 
 //		Creating and Adding a MenuItem - Attribute
 		MenuItem deleteAttribute = new MenuItem("Attribute");
+		deleteAttribute.setOnAction(actionEvent -> {
+			ArrayList<String[]> component = getSelectedComponents();
+			ArrayList<String[]> attributes = getSelectedAttributes();
+			String componentId = null;
+			int attributeCodeLength = -1;
+			if (componentLabel.getText().equals("Actions")) {
+				attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
+				componentId = Action.getActionCode() + component.get(0)[0];
+				for (String[] attribute : attributes) {
+					Main.actionAttributeDAO.deleteActionAttribute(ActionAttribute.getActionAttributeCode() + attribute[0]);
+				}
+			} else if (componentLabel.getText().equals("Uncertainties")) {
+				attributeCodeLength = UncertaintyAttribute.getUncertaintyAttributeCode().length();
+				componentId = Uncertainty.getUncertaintyCode() + component.get(0)[0];
+				for (String[] attribute : attributes) {
+					Main.uncertaintyAttributeDAO.deleteUncertaintyAttribute(UncertaintyAttribute.getUncertaintyAttributeCode() + attribute[0]);
+				}
+			}
+			displayAttributes(componentId, attributeCodeLength);
+		});
 		deleteMenuButton.getItems().add(deleteAttribute);
 	}
 
-	private void displayComponents(String decisionId, String componentName, int componentCodeLenth) {
+	private void displayComponents(String decisionId, String componentName, int componentCodeLength) {
+		attributeLabel.setText("-");
+		attributeListView.getItems().clear();
 		componentListView.getItems().clear();
 		ArrayList<DecisionComponent> components = null;
 		if (componentName.equals("alternative")) {
@@ -219,7 +291,21 @@ public class HomeScreenController implements Initializable {
 			components = Main.objectiveDAO.getObjectives(decisionId);
 		}
 		for (int i = 0; i < components.size(); i++) {
-			componentListView.getItems().add(components.get(i).getIntComponentId(componentCodeLenth) + " - " + components.get(i).getComponentName());
+			componentListView.getItems().add(components.get(i).getIntComponentId(componentCodeLength) + " - " + components.get(i).getComponentName());
+		}
+	}
+
+	private void displayAttributes(String componentId, int attributeCodeLength) {
+		attributeListView.getItems().clear();
+		attributeLabel.setText("Attributes");
+		ArrayList<Attribute> attributes = null;
+		if (componentLabel.getText().equals("Actions")) {
+			attributes = Main.actionAttributeDAO.getActionAttributes(componentId);
+		} else if (componentLabel.getText().equals("Uncertainties")) {
+			attributes = Main.uncertaintyAttributeDAO.getUncertaintyAttributes(componentId);
+		}
+		for (int i = 0; i < attributes.size(); i++) {
+			attributeListView.getItems().add(attributes.get(i).getIntAttributeId(attributeCodeLength) + " - " + attributes.get(i).getAttributeName() + " (" + attributes.get(i).getAttributeDataType() + ")");
 		}
 	}
 
@@ -244,6 +330,15 @@ public class HomeScreenController implements Initializable {
 			splittedComponents.add(component.split(" - "));
 		}
 		return splittedComponents;
+	}
+
+	private ArrayList<String[]> getSelectedAttributes() {
+		ObservableList<String> attributes = attributeListView.getSelectionModel().getSelectedItems();
+		ArrayList<String[]> splittedAttributes = new ArrayList<>();
+		for (String attribute : attributes) {
+			splittedAttributes.add(attribute.split(" - "));
+		}
+		return splittedAttributes;
 	}
 
 }

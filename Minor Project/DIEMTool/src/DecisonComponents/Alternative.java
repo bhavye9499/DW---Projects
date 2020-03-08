@@ -1,4 +1,4 @@
-package DecisonComponentsAndNodes;
+package DecisonComponents;
 
 import DAO.AlternativeDAO;
 import DIEMToolApplication.Main;

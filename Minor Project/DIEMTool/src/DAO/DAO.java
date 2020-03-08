@@ -1,7 +1,8 @@
 package DAO;
 
 import DIEMToolApplication.JDBC;
-import DecisonComponentsAndNodes.DecisionComponent;
+import Attributes.Attribute;
+import DecisonComponents.DecisionComponent;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class DAO {
 		return ids;
 	}
 
-	public void addComponents(DecisionComponent component, String insertQuery) {
+	public void addComponent(DecisionComponent component, String insertQuery) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
 		try {
@@ -44,6 +45,26 @@ public class DAO {
 			pst.setString(1, component.getComponentId());
 			pst.setString(2, component.getComponentDecisionId());
 			pst.setString(3, component.getComponentName());
+			pst.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) pst.close();
+				if (con != null) con.close();
+			} catch (Exception e) { e.printStackTrace(); }
+		}
+	}
+
+	public void addAttribute(Attribute attribute, String insertQuery) {
+		Connection con = getConnection();
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(insertQuery);
+			pst.setString(1, attribute.getAttributeId());
+			pst.setString(2, attribute.getAttributeComponentId());
+			pst.setString(3, attribute.getAttributeName());
+			pst.setString(4, attribute.getAttributeDataType());
 			pst.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -77,12 +98,34 @@ public class DAO {
 		return components;
 	}
 
-	public void deleteComponents(String componentId, String deleteQuery) {
+	public ArrayList<Attribute> getAttributes(String componentId, String selectQuery, String componentName) {
+		Connection con = getConnection();
+		PreparedStatement pst = null;
+		ArrayList<Attribute> attributes = new ArrayList<>();
+		try {
+			pst = con.prepareStatement(selectQuery);
+			pst.setString(1, componentId);
+			ResultSet rs = pst.executeQuery();
+			while (rs.next()) {
+				attributes.add(new Attribute(rs.getString(componentName + "_attribute_id"), rs.getString(componentName + "_id"), rs.getString(componentName + "_attribute_name"), rs.getString(componentName + "_attribute_datatype")));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (pst != null) pst.close();
+				if (con != null) con.close();
+			} catch (Exception e) { e.printStackTrace(); }
+		}
+		return attributes;
+	}
+
+	public void deleteNode(String nodeId, String deleteQuery) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(deleteQuery);
-			pst.setString(1, componentId);
+			pst.setString(1, nodeId);
 			pst.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -93,4 +136,5 @@ public class DAO {
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 	}
+
 }

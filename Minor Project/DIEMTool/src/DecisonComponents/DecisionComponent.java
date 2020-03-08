@@ -1,4 +1,4 @@
-package DecisonComponentsAndNodes;
+package DecisonComponents;
 
 public class DecisionComponent {
 

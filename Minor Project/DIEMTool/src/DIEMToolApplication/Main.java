@@ -1,5 +1,6 @@
 package DIEMToolApplication;
 
+import Attributes.UncertaintyAttribute;
 import DAO.*;
 import HomeScreen.HomeScreen;
 import AddDecisionScreen.AddDecisionScreen;
@@ -16,7 +17,8 @@ public class Main extends Application {
 	public static UncertaintyDAO uncertaintyDAO;
 	public static ObjectiveDAO objectiveDAO;
 	public static ActionDAO actionDAO;
-	public static AttributeDAO attributeDAO;
+	public static ActionAttributeDAO actionAttributeDAO;
+	public static UncertaintyAttributeDAO uncertaintyAttributeDAO;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -27,7 +29,8 @@ public class Main extends Application {
 		uncertaintyDAO = new UncertaintyDAO();
 		objectiveDAO = new ObjectiveDAO();
 		actionDAO = new ActionDAO();
-		attributeDAO = new AttributeDAO();
+		actionAttributeDAO = new ActionAttributeDAO();
+		uncertaintyAttributeDAO = new UncertaintyAttributeDAO();
 
 //		Setting up MySQLLoginScreen and its scene
 //    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
