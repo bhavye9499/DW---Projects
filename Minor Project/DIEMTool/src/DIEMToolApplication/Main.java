@@ -1,10 +1,10 @@
 package DIEMToolApplication;
 
-import Attributes.UncertaintyAttribute;
 import DAO.*;
 import HomeScreen.HomeScreen;
 import AddDecisionScreen.AddDecisionScreen;
 import AddNodesScreen.AddNodesScreen;
+import MySQLLoginScreen.MySQLLoginScreen;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,12 +33,12 @@ public class Main extends Application {
 		uncertaintyAttributeDAO = new UncertaintyAttributeDAO();
 
 //		Setting up MySQLLoginScreen and its scene
-//    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
-//    	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
-//		String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
+    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
+    	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
+		String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
 
 //		Initializing Java DataBase Connectivity
-    	JDBC.init("bhavye", "pass@Bhavye99");	// user, pass
+    	JDBC.init(credentials[0], credentials[1]);	// user, pass
 
 //		Setting up MySQLLoginScreen and its scene
     	HomeScreen.init("../HomeScreen/HomeScreen.fxml", primaryStage, "DIEM Tool");

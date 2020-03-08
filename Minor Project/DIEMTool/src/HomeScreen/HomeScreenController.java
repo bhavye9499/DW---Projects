@@ -56,11 +56,13 @@ public class HomeScreenController implements Initializable {
 		MenuItem addAlternative = new MenuItem("Alternative");
 		addAlternative.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			String[] alternatives = AddNodesScreen.getAddNodesScreenController().display("Add Alternative", "Decision", decision.getDecisionName(), "Alternative");
-			for (String alternative : alternatives) {
-				Main.alternativeDAO.addAlternative(new Alternative(alternative, decision.getDecisionId()));
+			if (decision != null) {
+				String[] alternatives = AddNodesScreen.getAddNodesScreenController().display("Add Alternative", "Decision", decision.getDecisionName(), "Alternative");
+				for (String alternative : alternatives) {
+					Main.alternativeDAO.addAlternative(new Alternative(alternative, decision.getDecisionId()));
+				}
+				displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
 			}
-			displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
 		});
 		addMenuButton.getItems().add(addAlternative);
 
@@ -68,11 +70,13 @@ public class HomeScreenController implements Initializable {
 		MenuItem addUncertainty = new MenuItem("Uncertainty");
 		addUncertainty.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			String[] uncertainties = AddNodesScreen.getAddNodesScreenController().display("Add Uncertainty", "Decision", decision.getDecisionName(), "Uncertainty");
-			for (String uncertainty : uncertainties) {
-				Main.uncertaintyDAO.addUncertainty(new Uncertainty(uncertainty, decision.getDecisionId()));
+			if (decision != null) {
+				String[] uncertainties = AddNodesScreen.getAddNodesScreenController().display("Add Uncertainty", "Decision", decision.getDecisionName(), "Uncertainty");
+				for (String uncertainty : uncertainties) {
+					Main.uncertaintyDAO.addUncertainty(new Uncertainty(uncertainty, decision.getDecisionId()));
+				}
+				displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
 			}
-			displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
 		});
 		addMenuButton.getItems().add(addUncertainty);
 
@@ -80,11 +84,13 @@ public class HomeScreenController implements Initializable {
 		MenuItem addAction = new MenuItem("Action");
 		addAction.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			String[] actions = AddNodesScreen.getAddNodesScreenController().display("Add Action", "Decision", decision.getDecisionName(), "Action");
-			for (String action : actions) {
-				Main.actionDAO.addAction(new Action(action, decision.getDecisionId()));
+			if (decision != null) {
+				String[] actions = AddNodesScreen.getAddNodesScreenController().display("Add Action", "Decision", decision.getDecisionName(), "Action");
+				for (String action : actions) {
+					Main.actionDAO.addAction(new Action(action, decision.getDecisionId()));
+				}
+				displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
 			}
-			displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
 		});
 		addMenuButton.getItems().add(addAction);
 
@@ -92,11 +98,13 @@ public class HomeScreenController implements Initializable {
 		MenuItem addObjective = new MenuItem("Objective");
 		addObjective.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			String[] objectives = AddNodesScreen.getAddNodesScreenController().display("Add Objective", "Decision", decision.getDecisionName(), "Objective");
-			for (String objective : objectives) {
-				Main.objectiveDAO.addObjective(new Objective(objective, decision.getDecisionId()));
+			if (decision != null) {
+				String[] objectives = AddNodesScreen.getAddNodesScreenController().display("Add Objective", "Decision", decision.getDecisionName(), "Objective");
+				for (String objective : objectives) {
+					Main.objectiveDAO.addObjective(new Objective(objective, decision.getDecisionId()));
+				}
+				displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
 			}
-			displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
 		});
 		addMenuButton.getItems().add(addObjective);
 
@@ -106,9 +114,7 @@ public class HomeScreenController implements Initializable {
 			ArrayList<String[]> components = getSelectedComponents();
 			String componentId = null;
 			int attributeCodeLength = -1;
-			if (components.size() != 1) {
-				// TODO pop alert box
-			} else {
+			if (components.size() == 1) {
 				if (componentLabel.getText().equals("Actions")) {
 					componentId = Action.getActionCode() + components.get(0)[0];
 					String[] attributes = AddNodesScreen.getAddNodesScreenController().display("Add Attribute", "Action", components.get(0)[1], "Attribute");
@@ -137,7 +143,9 @@ public class HomeScreenController implements Initializable {
 		MenuItem viewAlternative = new MenuItem("Alternative");
 		viewAlternative.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+			}
 		});
 		viewMenuButton.getItems().add(viewAlternative);
 
@@ -145,7 +153,9 @@ public class HomeScreenController implements Initializable {
 		MenuItem viewUncertainty = new MenuItem("Uncertainty");
 		viewUncertainty.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+			}
 		});
 		viewMenuButton.getItems().add(viewUncertainty);
 
@@ -153,7 +163,9 @@ public class HomeScreenController implements Initializable {
 		MenuItem viewAction = new MenuItem("Action");
 		viewAction.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+			}
 		});
 		viewMenuButton.getItems().add(viewAction);
 
@@ -161,7 +173,9 @@ public class HomeScreenController implements Initializable {
 		MenuItem viewObjective = new MenuItem("Objective");
 		viewObjective.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+			}
 		});
 		viewMenuButton.getItems().add(viewObjective);
 
@@ -171,9 +185,7 @@ public class HomeScreenController implements Initializable {
 			ArrayList<String[]> components = getSelectedComponents();
 			String componentId = null;
 			int attributeCodeLength = -1;
-			if (components.size() != 1) {
-				// TODO pop alert box
-			} else {
+			if (components.size() == 1) {
 				if (componentLabel.getText().equals("Actions")) {
 					componentId = Action.getActionCode() + components.get(0)[0];
 					attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
@@ -192,7 +204,9 @@ public class HomeScreenController implements Initializable {
 		MenuItem deleteDecision = new MenuItem("Decision");
 		deleteDecision.setOnAction(actionEvent -> {
 			Decision decision = getSelectedDecision();
-			Main.decisionDAO.deleteDecision(decision.getDecisionId());
+			if (decision != null) {
+				Main.decisionDAO.deleteDecision(decision.getDecisionId());
+			}
 			loadDecisions();
 			componentListView.getItems().clear();
 			attributeListView.getItems().clear();
@@ -207,7 +221,9 @@ public class HomeScreenController implements Initializable {
 			for (String[] alternative : alternatives) {
 				Main.alternativeDAO.deleteAlternative(Alternative.getAlternativeCode() + alternative[0]);
 			}
-			displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "alternative", Alternative.getAlternativeCode().length());
+			}
 		});
 		deleteMenuButton.getItems().add(deleteAlternative);
 
@@ -219,7 +235,9 @@ public class HomeScreenController implements Initializable {
 			for (String[] uncertainty : uncertainties) {
 				Main.uncertaintyDAO.deleteUncertainty(Uncertainty.getUncertaintyCode() + uncertainty[0]);
 			}
-			displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "uncertainty", Uncertainty.getUncertaintyCode().length());
+			}
 		});
 		deleteMenuButton.getItems().add(deleteUncertainty);
 
@@ -231,7 +249,9 @@ public class HomeScreenController implements Initializable {
 			for (String[] action : actions) {
 				Main.actionDAO.deleteAction(Action.getActionCode() + action[0]);
 			}
-			displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "action", Action.getActionCode().length());
+			}
 		});
 		deleteMenuButton.getItems().add(deleteAction);
 
@@ -243,7 +263,9 @@ public class HomeScreenController implements Initializable {
 			for (String[] objective : objectives) {
 				Main.objectiveDAO.deleteObjective(Objective.getObjectiveCode() + objective[0]);
 			}
-			displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+			if (decision != null) {
+				displayComponents(decision.getDecisionId(), "objective", Objective.getObjectiveCode().length());
+			}
 		});
 		deleteMenuButton.getItems().add(deleteObjective);
 
@@ -254,20 +276,21 @@ public class HomeScreenController implements Initializable {
 			ArrayList<String[]> attributes = getSelectedAttributes();
 			String componentId = null;
 			int attributeCodeLength = -1;
-			if (componentLabel.getText().equals("Actions")) {
+			if (componentLabel.getText().equals("Actions") && component.size() == 1) {
 				attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
 				componentId = Action.getActionCode() + component.get(0)[0];
 				for (String[] attribute : attributes) {
 					Main.actionAttributeDAO.deleteActionAttribute(ActionAttribute.getActionAttributeCode() + attribute[0]);
 				}
-			} else if (componentLabel.getText().equals("Uncertainties")) {
+				displayAttributes(componentId, attributeCodeLength);
+			} else if (componentLabel.getText().equals("Uncertainties") && component.size() == 1) {
 				attributeCodeLength = UncertaintyAttribute.getUncertaintyAttributeCode().length();
 				componentId = Uncertainty.getUncertaintyCode() + component.get(0)[0];
 				for (String[] attribute : attributes) {
 					Main.uncertaintyAttributeDAO.deleteUncertaintyAttribute(UncertaintyAttribute.getUncertaintyAttributeCode() + attribute[0]);
 				}
+				displayAttributes(componentId, attributeCodeLength);
 			}
-			displayAttributes(componentId, attributeCodeLength);
 		});
 		deleteMenuButton.getItems().add(deleteAttribute);
 	}
@@ -320,6 +343,7 @@ public class HomeScreenController implements Initializable {
 
 	private Decision getSelectedDecision() {
 		ObservableList<String> decisions = decisionListView.getSelectionModel().getSelectedItems();
+		if (decisions.size() == 0) { return null; }
 		return new Decision(decisions.get(0).split(" - "));
 	}
 
