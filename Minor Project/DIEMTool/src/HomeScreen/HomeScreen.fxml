@@ -30,6 +30,11 @@
                         <Font size="15.0" />
                      </font>
                   </MenuButton>
+                  <MenuButton fx:id="updateMenuButton" mnemonicParsing="false" text="Update">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </MenuButton>
                </children>
                <padding>
                   <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />

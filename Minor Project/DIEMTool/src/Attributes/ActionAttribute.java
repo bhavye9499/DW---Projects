@@ -6,7 +6,7 @@ import DIEMToolApplication.Main;
 public class ActionAttribute extends Attribute{
 
 	private static final String actionAttributeCode = "ACTATR";
-	private static int actionAttributeCtr = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getActionAttributeTableName(), ActionAttribute.getActionAttributeCode().length()).size();
+	private static int actionAttributeCtr = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).size();
 
 	public ActionAttribute() {}
 

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AddNodesScreen.AddNodesScreenController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NodesScreen.NodesScreenController">
    <children>
       <VBox prefHeight="300.0" prefWidth="600.0">
          <children>
@@ -62,7 +62,7 @@
             </VBox>
             <HBox alignment="CENTER" spacing="75.0" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="addButton" mnemonicParsing="false" text="Add">
+                  <Button fx:id="okButton" mnemonicParsing="false" text="Ok">
                      <font>
                         <Font size="20.0" />
                      </font>

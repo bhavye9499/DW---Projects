@@ -1,4 +1,4 @@
-package AddNodesScreen;
+package NodesScreen;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,44 +13,49 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class AddNodesScreenController implements Initializable {
+public class NodesScreenController implements Initializable {
 	@FXML private Label addNodeToLabel, nodeToAddLabel;
 	@FXML private TextArea addNodeToTextArea, nodeToAddTextArea;
 	@FXML private CheckBox multipleNodesCheckBox;
-	@FXML private Button addButton, cancelButton;
-	private static String addNodeToLabelName, addNodeToTextAreaText, nodeToAddLabelName;
+	@FXML private Button okButton, cancelButton;
+	private static String okButtonText, addNodeToLabelName, addNodeToTextAreaText, nodeToAddLabelName, nodeToAddTextAreaText;
 	private static String[] nodes;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		okButton.setText(okButtonText);
 		addNodeToLabel.setText(addNodeToLabelName);
 		addNodeToTextArea.setText(addNodeToTextAreaText);
 		nodeToAddLabel.setText(nodeToAddLabelName);
-		nodeToAddTextArea.setText("");
-		addButton.setOnAction(actionEvent -> {
+		nodeToAddTextArea.setText(nodeToAddTextAreaText);
+		if (nodeToAddTextAreaText != null) multipleNodesCheckBox.setDisable(true);
+
+		okButton.setOnAction(actionEvent -> {
 			String text = nodeToAddTextArea.getText();
 			if (multipleNodesCheckBox.isSelected()) {
 				nodes = text.split("\n");
 			} else {
 				nodes = new String[]{text};
 			}
-			AddNodesScreen.getAddNodesScreenStage().close();
+			NodesScreen.getNodesScreenStage().close();
 		});
 		cancelButton.setOnAction(actionEvent -> {
 			nodes = new String[]{};
-			AddNodesScreen.getAddNodesScreenStage().close();
+			NodesScreen.getNodesScreenStage().close();
 		});
 	}
 
-	public String[] display(String title, String addNodeToName, String addNodeToText, String nodeToAddName) {
-		addNodeToTextAreaText = addNodeToText;
+	public String[] display(String title, String addNodeToName, String addNodeToText, String nodeToAddName, String nodeToAddText) {
 		addNodeToLabelName = addNodeToName;
+		addNodeToTextAreaText = addNodeToText;
 		nodeToAddLabelName = nodeToAddName;
+		nodeToAddTextAreaText = nodeToAddText;
+		okButtonText = (nodeToAddTextAreaText == null) ? "Add" : "Update";
 		try {
-        	AddNodesScreen.setAddNodesScreenScene(new Scene(FXMLLoader.load(getClass().getResource(AddNodesScreen.getAddNodesScreenName()))));
+        	NodesScreen.setNodesScreenScene(new Scene(FXMLLoader.load(getClass().getResource(NodesScreen.getNodesScreenName()))));
 		} catch (Exception ignored) {}
-		Stage stage = AddNodesScreen.getAddNodesScreenStage();
-		stage.setScene(AddNodesScreen.getAddNodesScreenScene());
+		Stage stage = NodesScreen.getNodesScreenStage();
+		stage.setScene(NodesScreen.getNodesScreenScene());
 		stage.setTitle(title);
 		stage.showAndWait();
 		return nodes;

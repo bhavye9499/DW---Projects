@@ -15,13 +15,18 @@ public class AlternativeDAO extends DAO {
 	}
 
 	public ArrayList<DecisionComponent> getAlternatives(String decisionId) {
-		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = ?";
-		return getComponents(decisionId, selectQuery, "alternative");
+		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = " + quotes(decisionId);
+		return getComponents(selectQuery, "alternative");
 	}
 
 	public void deleteAlternative(String id) {
-		String deleteQuery = "DELETE FROM " + tableName + " WHERE alternative_id = ?";
-		deleteNode(id, deleteQuery);
+		String deleteQuery = "DELETE FROM " + tableName + " WHERE alternative_id = " + quotes(id);
+		updateOrDeleteElement(deleteQuery);
+	}
+
+	public void updateAlternative(String id, String name) {
+		String modifyQuery = "UPDATE " + tableName + " SET alternative_name = " + quotes(name) + " WHERE alternative_id = " + quotes(id);
+		updateOrDeleteElement(modifyQuery);
 	}
 
 	public static String getTableName() {

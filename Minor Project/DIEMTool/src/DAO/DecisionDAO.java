@@ -30,53 +30,57 @@ public class DecisionDAO extends DAO {
 		}
 	}
 
-	public Decision getDecision(int decisionId) {
+	public Decision getDecision(int id) {
 		Connection con = getConnection();
-		PreparedStatement pst = null;
+		Statement st = null;
 		Decision decision = new Decision();
 		try {
-			String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = ?";
-			pst = con.prepareStatement(selectQuery);
-			pst.setString(1, Decision.getDecisionCode() + decisionId);
-			ResultSet rs = pst.executeQuery();
+			String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = " + quotes(Decision.getDecisionCode() + id);
+			st = con.createStatement();
+			ResultSet rs = st.executeQuery(selectQuery);
 			rs.next();
-			decision.setDecisionId(Decision.getDecisionCode() + decisionId);
+			decision.setDecisionId(Decision.getDecisionCode() + id);
 			decision.setDecisionName(rs.getString("decision_name"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pst != null) pst.close();
+				if (st != null) st.close();
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return decision;
 	}
 
-	public void deleteDecision(String decId) {
+	public void deleteDecision(String id) {
 //		Deleting all alternatives
-		ArrayList<DecisionComponent> components = Main.alternativeDAO.getAlternatives(decId);
+		ArrayList<DecisionComponent> components = Main.alternativeDAO.getAlternatives(id);
 		for (DecisionComponent component : components) {
 			Main.alternativeDAO.deleteAlternative(component.getComponentId());
 		}
 //		Deleting all uncertainties
-		components = Main.uncertaintyDAO.getUncertaintys(decId);
+		components = Main.uncertaintyDAO.getUncertainties(id);
 		for (DecisionComponent component : components) {
 			Main.uncertaintyDAO.deleteUncertainty(component.getComponentId());
 		}
 //		Deleting all actions
-		components = Main.actionDAO.getActions(decId);
+		components = Main.actionDAO.getActions(id);
 		for (DecisionComponent component : components) {
 			Main.actionDAO.deleteAction(component.getComponentId());
 		}
 //		Deleting all objectives
-		components = Main.objectiveDAO.getObjectives(decId);
+		components = Main.objectiveDAO.getObjectives(id);
 		for (DecisionComponent component : components) {
 			Main.objectiveDAO.deleteObjective(component.getComponentId());
 		}
 //		Finally deleting the decision
-		String deleteQuery = "DELETE FROM " + tableName + " WHERE decision_id = ?";
-		deleteNode(decId, deleteQuery);
+		String deleteQuery = "DELETE FROM " + tableName + " WHERE decision_id = " + quotes(id);
+		updateOrDeleteElement(deleteQuery);
+	}
+
+	public void updateDecision(String id, String name) {
+		String modifyQuery = "UPDATE " + tableName + " SET decision_name = " + quotes(name) + " WHERE decision_id = " + quotes(id);
+		updateOrDeleteElement(modifyQuery);
 	}
 
 	public static String getTableName() {

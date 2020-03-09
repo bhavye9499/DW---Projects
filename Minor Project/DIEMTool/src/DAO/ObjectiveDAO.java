@@ -15,13 +15,18 @@ public class ObjectiveDAO extends DAO {
 	}
 
 	public ArrayList<DecisionComponent> getObjectives(String decisionId) {
-		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = ?";
-		return getComponents(decisionId, selectQuery, "objective");
+		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = " + quotes(decisionId);
+		return getComponents(selectQuery, "objective");
 	}
 
 	public void deleteObjective(String id) {
-		String deleteQuery = "DELETE FROM " + tableName + " WHERE objective_id = ?";
-		deleteNode(id, deleteQuery);
+		String deleteQuery = "DELETE FROM " + tableName + " WHERE objective_id = " + quotes(id);
+		updateOrDeleteElement(deleteQuery);
+	}
+
+	public void updateObjective(String id, String name) {
+		String modifyQuery = "UPDATE " + tableName + " SET objective_name = " + quotes(name) + " WHERE objective_id = " + quotes(id);
+		updateOrDeleteElement(modifyQuery);
 	}
 
 	public static String getTableName() {

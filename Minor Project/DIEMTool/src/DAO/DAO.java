@@ -37,7 +37,11 @@ public class DAO {
 		return ids;
 	}
 
-	public void addComponent(DecisionComponent component, String insertQuery) {
+	protected String quotes(String s) {
+		return "'" + s + "'";
+	}
+
+	protected void addComponent(DecisionComponent component, String insertQuery) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
 		try {
@@ -56,7 +60,7 @@ public class DAO {
 		}
 	}
 
-	public void addAttribute(Attribute attribute, String insertQuery) {
+	protected void addAttribute(Attribute attribute, String insertQuery) {
 		Connection con = getConnection();
 		PreparedStatement pst = null;
 		try {
@@ -76,14 +80,13 @@ public class DAO {
 		}
 	}
 
-	public ArrayList<DecisionComponent> getComponents(String decisionId, String selectQuery, String componentName) {
+	protected ArrayList<DecisionComponent> getComponents(String selectQuery, String componentName) {
 		Connection con = getConnection();
-		PreparedStatement pst = null;
+		Statement st = null;
 		ArrayList<DecisionComponent> components = new ArrayList<>();
 		try {
-			pst = con.prepareStatement(selectQuery);
-			pst.setString(1, decisionId);
-			ResultSet rs = pst.executeQuery();
+			st = con.createStatement();
+			ResultSet rs = st.executeQuery(selectQuery);
 			while (rs.next()) {
 				components.add(new DecisionComponent(rs.getString(componentName + "_id"), rs.getString("decision_id"), rs.getString(componentName + "_name")));
 			}
@@ -91,21 +94,20 @@ public class DAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pst != null) pst.close();
+				if (st != null) st.close();
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return components;
 	}
 
-	public ArrayList<Attribute> getAttributes(String componentId, String selectQuery, String componentName) {
+	protected ArrayList<Attribute> getAttributes(String selectQuery, String componentName) {
 		Connection con = getConnection();
-		PreparedStatement pst = null;
+		Statement st = null;
 		ArrayList<Attribute> attributes = new ArrayList<>();
 		try {
-			pst = con.prepareStatement(selectQuery);
-			pst.setString(1, componentId);
-			ResultSet rs = pst.executeQuery();
+			st = con.createStatement();
+			ResultSet rs = st.executeQuery(selectQuery);
 			while (rs.next()) {
 				attributes.add(new Attribute(rs.getString(componentName + "_attribute_id"), rs.getString(componentName + "_id"), rs.getString(componentName + "_attribute_name"), rs.getString(componentName + "_attribute_datatype")));
 			}
@@ -113,25 +115,24 @@ public class DAO {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pst != null) pst.close();
+				if (st != null) st.close();
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}
 		return attributes;
 	}
 
-	public void deleteNode(String nodeId, String deleteQuery) {
+	protected void updateOrDeleteElement(String query) {
 		Connection con = getConnection();
-		PreparedStatement pst = null;
+		Statement st = null;
 		try {
-			pst = con.prepareStatement(deleteQuery);
-			pst.setString(1, nodeId);
-			pst.executeUpdate();
+			st = con.createStatement();
+			st.executeUpdate(query);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (pst != null) pst.close();
+				if (st != null) st.close();
 				if (con != null) con.close();
 			} catch (Exception e) { e.printStackTrace(); }
 		}

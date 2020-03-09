@@ -15,15 +15,20 @@ public class ActionDAO extends DAO {
 	}
 
 	public ArrayList<DecisionComponent> getActions(String decisionId) {
-		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = ?";
-		return getComponents(decisionId, selectQuery, "action");
+		String selectQuery = "SELECT * FROM " + tableName + " WHERE decision_id = " + quotes(decisionId);
+		return getComponents(selectQuery, "action");
 	}
 
 	public void deleteAction(String id) {
-		String deleteQuery1 = "DELETE FROM " + ActionAttributeDAO.getActionAttributeTableName() + " WHERE action_id = ?";
-		String deleteQuery2 = "DELETE FROM " + tableName + " WHERE action_id = ?";
-		deleteNode(id, deleteQuery1);
-		deleteNode(id, deleteQuery2);
+		String deleteQuery1 = "DELETE FROM " + ActionAttributeDAO.getTableName() + " WHERE action_id = " + quotes(id);
+		String deleteQuery2 = "DELETE FROM " + tableName + " WHERE action_id = " + quotes(id);
+		updateOrDeleteElement(deleteQuery1);
+		updateOrDeleteElement(deleteQuery2);
+	}
+
+	public void updateAction(String id, String name) {
+		String modifyQuery = "UPDATE " + tableName + " SET action_name = " + quotes(name) + " WHERE action_id = " + quotes(id);
+		updateOrDeleteElement(modifyQuery);
 	}
 
 	public static String getTableName() {
