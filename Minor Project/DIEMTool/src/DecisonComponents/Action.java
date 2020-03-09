@@ -6,7 +6,8 @@ import DIEMToolApplication.Main;
 public class Action extends DecisionComponent {
 
 	private static final String actionCode = "ACT";
-	private static int actionCtr = Main.actionDAO.getListOfRecordIds("SELECT * FROM " + ActionDAO.getTableName(), Action.getActionCode().length()).size();
+	private static int numRecords = Main.actionDAO.getListOfRecordIds("SELECT * FROM " + ActionDAO.getTableName(), Action.getActionCode().length()).size();
+	private static int actionCtr = Main.actionDAO.getListOfRecordIds("SELECT * FROM " + ActionDAO.getTableName(), Action.getActionCode().length()).get(numRecords - 1);
 
 	public Action() {}
 

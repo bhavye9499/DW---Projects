@@ -3,10 +3,13 @@ package Attributes;
 import DAO.ActionAttributeDAO;
 import DIEMToolApplication.Main;
 
+import java.util.ArrayList;
+
 public class ActionAttribute extends Attribute{
 
 	private static final String actionAttributeCode = "ACTATR";
-	private static int actionAttributeCtr = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).size();
+	private static int numRecords = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).size();
+	private static int actionAttributeCtr = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).get(numRecords - 1) + 1;
 
 	public ActionAttribute() {}
 

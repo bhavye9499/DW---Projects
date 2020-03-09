@@ -6,7 +6,8 @@ import DIEMToolApplication.Main;
 public class Alternative extends DecisionComponent {
 
 	private static final String alternativeCode = "ALT";
-	private static int alternativeCtr = Main.alternativeDAO.getListOfRecordIds("SELECT * FROM " + AlternativeDAO.getTableName(), Alternative.getAlternativeCode().length()).size();
+	private static int numRecords = Main.alternativeDAO.getListOfRecordIds("SELECT * FROM " + AlternativeDAO.getTableName(), Alternative.getAlternativeCode().length()).size();
+	private static int alternativeCtr = Main.alternativeDAO.getListOfRecordIds("SELECT * FROM " + AlternativeDAO.getTableName(), Alternative.getAlternativeCode().length()).get(numRecords - 1);
 
 	public Alternative() {}
 

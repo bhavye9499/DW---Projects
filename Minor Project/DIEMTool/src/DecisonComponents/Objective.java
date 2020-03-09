@@ -6,7 +6,8 @@ import DAO.ObjectiveDAO;
 public class Objective extends DecisionComponent {
 
 	private static final String objectiveCode = "OBJ";
-	private static int objectiveCtr = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).size();
+	private static int numRecords = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).size();
+	private static int objectiveCtr = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).get(numRecords - 1);
 
 	public Objective() {}
 
