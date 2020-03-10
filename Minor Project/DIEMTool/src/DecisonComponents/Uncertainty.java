@@ -6,8 +6,9 @@ import DAO.UncertaintyDAO;
 public class Uncertainty extends DecisionComponent {
 
 	private static final String uncertaintyCode = "UNC";
+	private static final String componentLabelText = "Uncertainties";
 	private static int numRecords = Main.uncertaintyDAO.getListOfRecordIds("SELECT * FROM " + UncertaintyDAO.getTableName(), Uncertainty.getUncertaintyCode().length()).size();
-	private static int uncertaintyCtr = Main.uncertaintyDAO.getListOfRecordIds("SELECT * FROM " + UncertaintyDAO.getTableName(), Uncertainty.getUncertaintyCode().length()).get(numRecords - 1);
+	private static int uncertaintyCtr = (numRecords == 0) ? 0 : Main.uncertaintyDAO.getListOfRecordIds("SELECT * FROM " + UncertaintyDAO.getTableName(), Uncertainty.getUncertaintyCode().length()).get(numRecords - 1);
 
 	public Uncertainty() {}
 
@@ -21,6 +22,10 @@ public class Uncertainty extends DecisionComponent {
 
 	public static String getUncertaintyCode() {
 		return uncertaintyCode;
+	}
+
+	public static String getComponentLabelText() {
+		return componentLabelText;
 	}
 
 }

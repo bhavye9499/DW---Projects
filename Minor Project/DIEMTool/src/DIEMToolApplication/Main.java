@@ -1,5 +1,6 @@
 package DIEMToolApplication;
 
+import AlertBox.AlertBox;
 import DAO.*;
 import HomeScreen.HomeScreen;
 import DecisionScreen.DecisionScreen;
@@ -39,7 +40,7 @@ public class Main extends Application {
 //		Initializing Java DataBase Connectivity
     	JDBC.init("bhavye", "pass@Bhavye99");	// user, pass
 
-//		Setting up MySQLLoginScreen and its scene
+//		Setting up HomeScreen and its scene
     	HomeScreen.init("../HomeScreen/HomeScreen.fxml", primaryStage, "DIEM Tool");
     	HomeScreen.setHomeScreenScene(new Scene(FXMLLoader.load(getClass().getResource(HomeScreen.getHomeScreenName()))));
 
@@ -48,6 +49,9 @@ public class Main extends Application {
 
 //		Setting up NodesScreen
     	NodesScreen.init("../NodesScreen/NodesScreen.fxml");
+
+//    	Setting up AlertBox
+		AlertBox.init("../AlertBox/AlertBox.fxml");
 
 //		Setting HomeScreenScene to HomeScreenStage and showing it
         HomeScreen.getHomeScreenStage().setScene(HomeScreen.getHomeScreenScene());

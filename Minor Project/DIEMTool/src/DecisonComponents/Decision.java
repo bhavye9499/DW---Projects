@@ -7,7 +7,7 @@ public class Decision {
 
 	private static final String decisionCode = "DEC";
 	private static int numRecords = Main.decisionDAO.getListOfRecordIds("SELECT * FROM " + DecisionDAO.getTableName(), Decision.getDecisionCode().length()).size();
-	private static int decisionCtr = Main.decisionDAO.getListOfRecordIds("SELECT * FROM " + DecisionDAO.getTableName(), Decision.getDecisionCode().length()).get(numRecords - 1);
+	private static int decisionCtr = (numRecords == 0) ? 0 : Main.decisionDAO.getListOfRecordIds("SELECT * FROM " + DecisionDAO.getTableName(), Decision.getDecisionCode().length()).get(numRecords - 1);
 	private String decisionId;
 	private String decisionName;
 

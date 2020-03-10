@@ -6,8 +6,9 @@ import DAO.ObjectiveDAO;
 public class Objective extends DecisionComponent {
 
 	private static final String objectiveCode = "OBJ";
+	private static final String componentLabelText = "Objectives";
 	private static int numRecords = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).size();
-	private static int objectiveCtr = Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).get(numRecords - 1);
+	private static int objectiveCtr = (numRecords == 0) ? 0 : Main.objectiveDAO.getListOfRecordIds("SELECT * FROM " + ObjectiveDAO.getTableName(), Objective.getObjectiveCode().length()).get(numRecords - 1);
 
 	public Objective() {}
 
@@ -21,6 +22,10 @@ public class Objective extends DecisionComponent {
 
 	public static String getObjectiveCode() {
 		return objectiveCode;
+	}
+
+	public static String getComponentLabelText() {
+		return componentLabelText;
 	}
 
 }
