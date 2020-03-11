@@ -13,17 +13,37 @@ public class JDBC {
 	private static String User;
 	private static String Pass;
 
-	public static void init(String user, String pass) {
+	public static int init(String user, String pass) {
 //		Setting the database credentials
 		JDBC.setUser(user);
 		JDBC.setPass(pass);
 		JDBC jdbc = new JDBC();
+		int status = jdbc.tryConnection();
+		if (status == -1) return status;
 		jdbc.setupDatabase();
 		jdbc.setupTables();
+		return 0;
+	}
+
+	private int tryConnection() {
+		Connection con = null;
+		try {
+			Class.forName(JDBC_DRIVER);
+			con = DriverManager.getConnection(DB_URL, User, Pass);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			return -1;
+		} finally {
+			try {
+				if (con != null) con.close();
+			} catch (Exception e) { e.printStackTrace(); }
+		}
+		return 0;
 	}
 
 //	Creating Database if it doesn't exist already
-	public void setupDatabase() {
+	private void setupDatabase() {
 		Connection con = null;
 		Statement st = null;
     	try {
@@ -43,7 +63,7 @@ public class JDBC {
 	}
 
 //	Creating required tables if they don't exist already
-	public void setupTables() {
+	private void setupTables() {
 		Connection con = null;
 		Statement st = null;
 		try {
@@ -159,7 +179,7 @@ public class JDBC {
 		return User;
 	}
 
-	public static void setUser(String user) {
+	private static void setUser(String user) {
 		User = user;
 	}
 
@@ -167,7 +187,7 @@ public class JDBC {
 		return Pass;
 	}
 
-	public static void setPass(String pass) {
+	private static void setPass(String pass) {
 		Pass = pass;
 	}
 }

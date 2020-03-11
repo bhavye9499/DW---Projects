@@ -42,6 +42,7 @@ public class MySQLLoginScreenController implements Initializable {
 		Stage stage = MySQLLoginScreen.getMysqlLoginScreenStage();
 		stage.setScene(MySQLLoginScreen.getMysqlLoginScreenScene());
 		stage.showAndWait();
+		if (uname == null || pass == null) return null;
 		return new String[]{uname, pass};
 	}
 
