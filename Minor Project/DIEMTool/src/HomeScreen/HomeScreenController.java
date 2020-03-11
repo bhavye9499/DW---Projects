@@ -115,7 +115,7 @@ public class HomeScreenController implements Initializable {
 				String[] attributes = NodesScreen.getNodesScreenController().display("Add Attribute", "Action", components.get(0)[1], "Attribute", null);
 				for (String attribute : attributes) {
 					String[] splittedAttribute = attribute.split(",");
-					Main.actionAttributeDAO.addActionAttribute(new ActionAttribute(splittedAttribute[0], componentId, splittedAttribute[1]));
+					Main.actionAttributeDAO.addActionAttribute(new ActionAttribute(splittedAttribute[0].strip(), componentId, splittedAttribute[1].strip()));
 				}
 				attributeCodeLength = ActionAttribute.getActionAttributeCode().length();
 			} else if (componentLabel.getText().equals(Uncertainty.getComponentLabelText())) {
@@ -123,7 +123,7 @@ public class HomeScreenController implements Initializable {
 				String[] attributes = NodesScreen.getNodesScreenController().display("Add Attribute", "Uncertainty", components.get(0)[1], "Attribute", null);
 				for (String attribute : attributes) {
 					String[] splittedAttribute = attribute.split(",");
-					Main.uncertaintyAttributeDAO.addUncertaintyAttribute(new UncertaintyAttribute(splittedAttribute[0], componentId, splittedAttribute[1]));
+					Main.uncertaintyAttributeDAO.addUncertaintyAttribute(new UncertaintyAttribute(splittedAttribute[0].strip(), componentId, splittedAttribute[1].strip()));
 				}
 				attributeCodeLength = UncertaintyAttribute.getUncertaintyAttributeCode().length();
 			}
@@ -140,7 +140,7 @@ public class HomeScreenController implements Initializable {
 			addMenuItems.get(2).setDisable(decision == null);	// Uncertainty
 			addMenuItems.get(3).setDisable(decision == null);	// Action
 			addMenuItems.get(4).setDisable(decision == null);	// Objective
-			addMenuItems.get(5).setDisable(components.size() != 1 || !componentLabel.getText().equals(Action.getComponentLabelText()) || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));	// Attribute
+			addMenuItems.get(5).setDisable(components.size() != 1 || !(componentLabel.getText().equals(Action.getComponentLabelText()) || componentLabel.getText().equals(Uncertainty.getComponentLabelText())));	// Attribute
 		});
 	}
 
@@ -202,7 +202,7 @@ public class HomeScreenController implements Initializable {
 			viewMenuItems.get(1).setDisable(decision == null);	// Uncertainty
 			viewMenuItems.get(2).setDisable(decision == null);	// Action
 			viewMenuItems.get(3).setDisable(decision == null);	// Objective
-			viewMenuItems.get(4).setDisable(components.size() != 1 || !componentLabel.getText().equals(Action.getComponentLabelText()) || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));	// Attribute
+			viewMenuItems.get(4).setDisable(components.size() != 1 || !(componentLabel.getText().equals(Action.getComponentLabelText()) || componentLabel.getText().equals(Uncertainty.getComponentLabelText())));	// Attribute
 		});
 	}
 
@@ -292,12 +292,13 @@ public class HomeScreenController implements Initializable {
 			ObservableList<MenuItem> deleteMenuItems = deleteMenuButton.getItems();
 			Decision decision = getSelectedDecision();
 			ArrayList<String[]> components = getSelectedComponents();
+			ArrayList<String[]> attributes = getSelectedAttributes();
 			deleteMenuItems.get(0).setDisable(decision == null);	// Decision
 			deleteMenuItems.get(1).setDisable(decision == null || components.size() == 0 || !componentLabel.getText().equals(Alternative.getComponentLabelText()));	// Alternative
 			deleteMenuItems.get(2).setDisable(decision == null || components.size() == 0 || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));	// Uncertainty
 			deleteMenuItems.get(3).setDisable(decision == null || components.size() == 0 || !componentLabel.getText().equals(Action.getComponentLabelText()));	// Action
 			deleteMenuItems.get(4).setDisable(decision == null || components.size() == 0 || !componentLabel.getText().equals(Objective.getComponentLabelText()));	// Objective
-			deleteMenuItems.get(5).setDisable(decision == null || components.size() != 1 || !componentLabel.getText().equals(Action.getComponentLabelText()) || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));	// Attribute
+			deleteMenuItems.get(5).setDisable(decision == null || components.size() != 1 || attributes.size() == 0 || !(componentLabel.getText().equals(Action.getComponentLabelText()) || componentLabel.getText().equals(Uncertainty.getComponentLabelText())));	// Attribute
 		});
 	}
 
@@ -381,14 +382,14 @@ public class HomeScreenController implements Initializable {
 				String[] attributesInfo = NodesScreen.getNodesScreenController().display("Add Attribute", "Action", component.get(0)[1], "Attribute", attributeInfo);
 				if (attributesInfo.length != 0) {
 					String[] splittedAttribute = attributesInfo[0].split(",");
-					Main.actionAttributeDAO.updateActionAttribute(ActionAttribute.getActionAttributeCode() + attribute.get(0)[0], splittedAttribute[0], splittedAttribute[1]);
+					Main.actionAttributeDAO.updateActionAttribute(ActionAttribute.getActionAttributeCode() + attribute.get(0)[0], splittedAttribute[0].strip(), splittedAttribute[1].strip());
 				}
 				displayAttributes(Action.getActionCode() + component.get(0)[0], ActionAttribute.getActionAttributeCode().length());
 			} else if (componentLabel.getText().equals("Uncertainties")) {
 				String[] attributesInfo = NodesScreen.getNodesScreenController().display("Add Attribute", "Uncertainty", component.get(0)[1], "Attribute", attributeInfo);
 				if (attributesInfo.length != 0) {
 					String[] splittedAttribute = attributesInfo[0].split(",");
-					Main.uncertaintyAttributeDAO.updateUncertaintyAttribute(UncertaintyAttribute.getUncertaintyAttributeCode() + attribute.get(0)[0], splittedAttribute[0], splittedAttribute[1]);
+					Main.uncertaintyAttributeDAO.updateUncertaintyAttribute(UncertaintyAttribute.getUncertaintyAttributeCode() + attribute.get(0)[0], splittedAttribute[0].strip(), splittedAttribute[1].strip());
 				}
 				displayAttributes(Uncertainty.getUncertaintyCode() + component.get(0)[0], UncertaintyAttribute.getUncertaintyAttributeCode().length());
 			}
@@ -405,7 +406,7 @@ public class HomeScreenController implements Initializable {
 			updateMenuItems.get(2).setDisable(decision == null || components.size() != 1 || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));		// Uncertainty
 			updateMenuItems.get(3).setDisable(decision == null || components.size() != 1 || !componentLabel.getText().equals(Action.getComponentLabelText()));		// Action
 			updateMenuItems.get(4).setDisable(decision == null || components.size() != 1 || !componentLabel.getText().equals(Objective.getComponentLabelText()));		// Objective
-			updateMenuItems.get(5).setDisable(decision == null || components.size() != 1 || attributes.size() != 1 || !componentLabel.getText().equals(Action.getComponentLabelText()) || !componentLabel.getText().equals(Uncertainty.getComponentLabelText()));	// Attribute
+			updateMenuItems.get(5).setDisable(decision == null || components.size() != 1 || attributes.size() != 1 || !(componentLabel.getText().equals(Action.getComponentLabelText()) || componentLabel.getText().equals(Uncertainty.getComponentLabelText())));	// Attribute
 		});
 	}
 

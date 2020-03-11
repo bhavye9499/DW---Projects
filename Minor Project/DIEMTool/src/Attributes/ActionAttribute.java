@@ -9,7 +9,7 @@ public class ActionAttribute extends Attribute{
 
 	private static final String actionAttributeCode = "ACTATR";
 	private static int numRecords = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).size();
-	private static int actionAttributeCtr = Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).get(numRecords - 1) + 1;
+	private static int actionAttributeCtr = (numRecords == 0) ? 0 : Main.actionAttributeDAO.getListOfRecordIds("SELECT * FROM " + ActionAttributeDAO.getTableName(), ActionAttribute.getActionAttributeCode().length()).get(numRecords - 1) + 1;
 
 	public ActionAttribute() {}
 

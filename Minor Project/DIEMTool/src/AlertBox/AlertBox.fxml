@@ -5,15 +5,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AlertBox.AlertBoxController">
-   <children>
-      <VBox alignment="CENTER" prefHeight="150.0" prefWidth="400.0">
-         <children>
-            <Label fx:id="messageLabel" prefHeight="100.0" prefWidth="350.0" text="Label" wrapText="true" VBox.vgrow="ALWAYS">
-               <font>
-                  <Font size="15.0" />
-               </font></Label>
-         </children>
-      </VBox>
-   </children>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0"
+      prefWidth="425.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="AlertBox.AlertBoxController">
+    <VBox alignment="CENTER" prefHeight="175.0" prefWidth="425.0">
+        <Label fx:id="messageLabel" prefHeight="125.0" prefWidth="375.0" text="Label" wrapText="true"
+               VBox.vgrow="ALWAYS">
+            <font>
+                <Font size="15.0"/>
+            </font>
+        </Label>
+    </VBox>
 </Pane>

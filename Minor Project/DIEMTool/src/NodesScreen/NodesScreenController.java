@@ -1,13 +1,11 @@
 package NodesScreen;
 
+import AlertBox.AlertBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -37,7 +35,9 @@ public class NodesScreenController implements Initializable {
 			} else {
 				nodes = new String[]{text};
 			}
-			NodesScreen.getNodesScreenStage().close();
+			if (!nodeToAddLabelName.equals("Attribute") || isCorrect()) {
+				NodesScreen.getNodesScreenStage().close();
+			}
 		});
 		cancelButton.setOnAction(actionEvent -> {
 			nodes = new String[]{};
@@ -57,7 +57,26 @@ public class NodesScreenController implements Initializable {
 		Stage stage = NodesScreen.getNodesScreenStage();
 		stage.setScene(NodesScreen.getNodesScreenScene());
 		stage.setTitle(title);
+		String message = "";
+		if (nodeToAddTextAreaText == null) {	// Add operation, not an Update operation
+			message = "If you want to add multiple values then add them on separate lines and don't forget to tick the checkbox for the same.\n";
+		}
+		if (nodeToAddName.equals("Attribute")) {
+			message += "Make sure to write the datatype (int, string, float, etc.) of each attribute. For eg. firstName, string";
+		}
+		AlertBox.getAlertBoxController().display("Message", message);
 		stage.showAndWait();
 		return nodes;
 	}
+
+	private boolean isCorrect() {
+		for (int i = 0; i < nodes.length; i++) {
+			if (!nodes[i].contains(",")) {
+				AlertBox.getAlertBoxController().display("Error", "Error at line " + (i + 1) + ": Missing datatype.");
+				return false;
+			}
+		}
+		return true;
+	}
+
 }

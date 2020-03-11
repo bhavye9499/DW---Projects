@@ -67,7 +67,7 @@ public class Main extends Application {
 //			Initializing Java DataBase Connectivity
 			int status = JDBC.init(credentials[0], credentials[1]);	// user, pass
 			if (status == -1) {
-				AlertBox.getAlertBoxController().display("Error", "Invalid username or password! Please try again");
+				AlertBox.getAlertBoxController().display("Error", "Invalid username or password! \nPlease try again");
 			} else {
 				break;
 			}
