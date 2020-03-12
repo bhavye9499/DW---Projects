@@ -1,5 +1,6 @@
 package DecisionScreen;
 
+import AlertBox.AlertBox;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -24,7 +25,12 @@ public class DecisionScreenController implements Initializable {
 		decisionTextArea.setText(decision);
 		okButton.setOnAction(actionEvent -> {
 			decision = decisionTextArea.getText();
-			DecisionScreen.getDecisionScreenStage().close();
+			if (decision != null && !decision.strip().equals("")) {
+				decision = decision.strip();
+				DecisionScreen.getDecisionScreenStage().close();
+			} else {
+				AlertBox.getAlertBoxController().display("Error", "It seems that the decision is empty. Please give a valid decision.");
+			}
 		});
 		cancelButton.setOnAction(actionEvent -> {
 			decision = null;

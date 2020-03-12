@@ -30,13 +30,13 @@ public class NodesScreenController implements Initializable {
 
 		okButton.setOnAction(actionEvent -> {
 			String text = nodeToAddTextArea.getText();
-			if (multipleNodesCheckBox.isSelected()) {
-				nodes = text.split("\n");
+			if (text != null && !text.strip().equals("")) {
+				nodes = multipleNodesCheckBox.isSelected() ? text.split("\n") : new String[]{text};
+				if (!nodeToAddLabelName.equals("Attribute") || isCorrect()) {
+					NodesScreen.getNodesScreenStage().close();
+				}
 			} else {
-				nodes = new String[]{text};
-			}
-			if (!nodeToAddLabelName.equals("Attribute") || isCorrect()) {
-				NodesScreen.getNodesScreenStage().close();
+				AlertBox.getAlertBoxController().display("Error", "It seems that the " + nodeToAddLabelName + " is empty. Please give a valid " + nodeToAddLabelName + ".");
 			}
 		});
 		cancelButton.setOnAction(actionEvent -> {
@@ -64,7 +64,9 @@ public class NodesScreenController implements Initializable {
 		if (nodeToAddName.equals("Attribute")) {
 			message += "Make sure to write the datatype (int, string, float, etc.) of each attribute. For eg. firstName, string";
 		}
-		AlertBox.getAlertBoxController().display("Message", message);
+		if (!message.equals("")) {
+			AlertBox.getAlertBoxController().display("Message", message);
+		}
 		stage.showAndWait();
 		return nodes;
 	}

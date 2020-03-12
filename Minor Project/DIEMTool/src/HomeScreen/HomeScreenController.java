@@ -35,6 +35,10 @@ public class HomeScreenController implements Initializable {
 		setupDeleteMenuButton();
 		setupUpdateMenuButton();
 
+//		Setting up ListViews
+		setupDecisionListView();
+		setupComponentListView();
+
 //		Loading the decisions from database
 		displayDecisions();
 	}
@@ -491,6 +495,17 @@ public class HomeScreenController implements Initializable {
 			splittedAttributes.add(new String[]{splittedAttribute[0], temp[0], temp[1].substring(1, temp[1].length() - 1)});
 		}
 		return splittedAttributes;
+	}
+
+	private void setupDecisionListView() {
+		decisionListView.setOnMouseClicked(mouseEvent -> {
+			componentListView.getSelectionModel().clearSelection();
+			attributeListView.getSelectionModel().clearSelection();
+		});
+	}
+
+	private void setupComponentListView() {
+		componentListView.setOnMouseClicked(mouseEvent -> attributeListView.getSelectionModel().clearSelection());
 	}
 
 }
