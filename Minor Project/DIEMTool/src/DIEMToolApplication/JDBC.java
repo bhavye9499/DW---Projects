@@ -1,8 +1,13 @@
 package DIEMToolApplication;
 
 import java.sql.*;
+import AlertBox.AlertBox;
+import MySQLLoginScreen.MySQLLoginScreen;
 
 public class JDBC {
+
+//	Error codes
+	private static final int ERRCXNF = -1;	// Connection Failure
 
 //	JDBC driver name and database URL
 	private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -13,13 +18,29 @@ public class JDBC {
 	private static String User;
 	private static String Pass;
 
-	public static int init(String user, String pass) {
+	public static void setupJDBC() {
+    	while (true) {
+//			Getting credentials
+			String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
+//			User pressed Cancel, therefore exiting the application
+			if (credentials == null) System.exit(0);
+//			Initializing Java DataBase Connectivity
+			int status = JDBC.init(credentials[0], credentials[1]);	// user, pass
+			if (status == ERRCXNF) {
+				AlertBox.getAlertBoxController().display("Error", "Invalid username or password! \nPlease try again.");
+			} else {
+				break;
+			}
+		}
+	}
+
+	private static int init(String user, String pass) {
 //		Setting the database credentials
 		JDBC.setUser(user);
 		JDBC.setPass(pass);
 		JDBC jdbc = new JDBC();
 		int status = jdbc.tryConnection();
-		if (status == -1) return status;
+		if (status == ERRCXNF) return status;
 		jdbc.setupDatabase();
 		jdbc.setupTables();
 		return 0;
@@ -33,7 +54,7 @@ public class JDBC {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
-			return -1;
+			return ERRCXNF;
 		} finally {
 			try {
 				if (con != null) con.close();

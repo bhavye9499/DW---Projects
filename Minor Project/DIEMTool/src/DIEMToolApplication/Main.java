@@ -40,8 +40,8 @@ public class Main extends Application {
     	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
     	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
 
-//    	Initializing Java Database Connectivity
-    	Main.initJDBC();
+//    	Setting up Java Database Connectivity
+    	JDBC.setupJDBC();
 
 //		Setting up HomeScreen and its scene
     	HomeScreen.init("../HomeScreen/HomeScreen.fxml", primaryStage, "DIEM Tool");
@@ -57,22 +57,6 @@ public class Main extends Application {
         HomeScreen.getHomeScreenStage().setScene(HomeScreen.getHomeScreenScene());
         HomeScreen.getHomeScreenStage().show();
     }
-
-    private static void initJDBC() {
-    	while (true) {
-//			Getting credentials
-			String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
-//			User pressed Cancel, therefore exiting the application
-			if (credentials == null) System.exit(0);
-//			Initializing Java DataBase Connectivity
-			int status = JDBC.init(credentials[0], credentials[1]);	// user, pass
-			if (status == -1) {
-				AlertBox.getAlertBoxController().display("Error", "Invalid username or password! \nPlease try again.");
-			} else {
-				break;
-			}
-		}
-	}
 
     public static void main(String[] args) {
         launch(args);
