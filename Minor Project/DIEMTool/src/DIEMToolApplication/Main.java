@@ -5,7 +5,7 @@ import DAO.*;
 import HomeScreen.HomeScreen;
 import DecisionScreen.DecisionScreen;
 import NodesScreen.NodesScreen;
-import MySQLLoginScreen.MySQLLoginScreen;
+import MysqlLoginScreen.MysqlLoginScreen;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,9 +36,9 @@ public class Main extends Application {
 //    	Setting up AlertBox
 		AlertBox.init("../AlertBox/AlertBox.fxml");
 
-//		Setting up MySQLLoginScreen and its scene
-    	MySQLLoginScreen.init("../MySQLLoginScreen/MySQLLoginScreen.fxml", "MySQL Login");
-    	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
+//		Setting up MysqlLoginScreen and its scene
+    	MysqlLoginScreen.init("../MysqlLoginScreen/MysqlLoginScreen.fxml", "MySQL Login");
+    	MysqlLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MysqlLoginScreen.getMysqlLoginScreenName()))));
 
 //    	Setting up Java Database Connectivity
     	JDBC.setupJDBC();

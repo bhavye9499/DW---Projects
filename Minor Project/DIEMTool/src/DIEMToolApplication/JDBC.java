@@ -2,7 +2,7 @@ package DIEMToolApplication;
 
 import java.sql.*;
 import AlertBox.AlertBox;
-import MySQLLoginScreen.MySQLLoginScreen;
+import MysqlLoginScreen.MysqlLoginScreen;
 
 public class JDBC {
 
@@ -21,7 +21,7 @@ public class JDBC {
 	public static void setupJDBC() {
     	while (true) {
 //			Getting credentials
-			String[] credentials = MySQLLoginScreen.getMysqlLoginScreenController().display();
+			String[] credentials = MysqlLoginScreen.getMysqlLoginScreenController().display();
 //			User pressed Cancel, therefore exiting the application
 			if (credentials == null) System.exit(0);
 //			Initializing Java DataBase Connectivity

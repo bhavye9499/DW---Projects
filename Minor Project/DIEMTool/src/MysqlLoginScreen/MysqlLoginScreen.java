@@ -1,19 +1,19 @@
-package MySQLLoginScreen;
+package MysqlLoginScreen;
 
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class MySQLLoginScreen {
+public class MysqlLoginScreen {
 
 	private static String mysqlLoginScreenName;
 	private static Scene mysqlLoginScreenScene;
 	private static Stage mysqlLoginScreenStage;
-	private static MySQLLoginScreenController mysqlLoginScreenController;
+	private static MysqlLoginScreenController mysqlLoginScreenController;
 
 	public static void init(String name, String title) {
 		setMysqlLoginScreenName(name);
 		setMysqlLoginScreenStage(new Stage(), title);
-		setMysqlLoginScreenController(new MySQLLoginScreenController());
+		setMysqlLoginScreenController(new MysqlLoginScreenController());
 	}
 
 	public static String getMysqlLoginScreenName() {
@@ -41,11 +41,11 @@ public class MySQLLoginScreen {
 		mysqlLoginScreenStage.setTitle(title);
 	}
 
-	public static MySQLLoginScreenController getMysqlLoginScreenController() {
+	public static MysqlLoginScreenController getMysqlLoginScreenController() {
 		return mysqlLoginScreenController;
 	}
 
-	public static void setMysqlLoginScreenController(MySQLLoginScreenController controller) {
+	public static void setMysqlLoginScreenController(MysqlLoginScreenController controller) {
 		mysqlLoginScreenController = controller;
 	}
 }

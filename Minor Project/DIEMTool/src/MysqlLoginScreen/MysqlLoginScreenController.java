@@ -1,4 +1,4 @@
-package MySQLLoginScreen;
+package MysqlLoginScreen;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MySQLLoginScreenController implements Initializable {
+public class MysqlLoginScreenController implements Initializable {
 
 	@FXML private Button loginButton, cancelButton;
 	@FXML private TextField unameTextField;
@@ -27,20 +27,20 @@ public class MySQLLoginScreenController implements Initializable {
 		loginButton.setOnAction(actionEvent -> {
 			uname = unameTextField.getText();
 			pass = passPasswordField.getText();
-			MySQLLoginScreen.getMysqlLoginScreenStage().close();
+			MysqlLoginScreen.getMysqlLoginScreenStage().close();
 		});
 		cancelButton.setOnAction(actionEvent -> {
 			uname = pass = null;
-			MySQLLoginScreen.getMysqlLoginScreenStage().close();
+			MysqlLoginScreen.getMysqlLoginScreenStage().close();
 		});
 	}
 
 	public String[] display() {
 		try {
-        	MySQLLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MySQLLoginScreen.getMysqlLoginScreenName()))));
+        	MysqlLoginScreen.setMysqlLoginScreenScene(new Scene(FXMLLoader.load(getClass().getResource(MysqlLoginScreen.getMysqlLoginScreenName()))));
 		} catch (Exception ignored) {}
-		Stage stage = MySQLLoginScreen.getMysqlLoginScreenStage();
-		stage.setScene(MySQLLoginScreen.getMysqlLoginScreenScene());
+		Stage stage = MysqlLoginScreen.getMysqlLoginScreenStage();
+		stage.setScene(MysqlLoginScreen.getMysqlLoginScreenScene());
 		stage.showAndWait();
 		if (uname == null || pass == null) return null;
 		return new String[]{uname, pass};
