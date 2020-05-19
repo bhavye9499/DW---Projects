@@ -10,6 +10,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -83,8 +85,10 @@ public class OptionsMenu extends JFrame {
 		lblProject.setFont(new Font("Times New Roman", Font.BOLD, 16));
 		lblProject.setBounds(119, 47, 134, 23);
 		contentPane.add(lblProject);
-		
-		
+
+		// Our Implementation ---------------------------------------------------------------------
+		RolapUtils.projectID = projectId;
+		// ----------------------------------------------------------------------------------------
 		String p_Info[] = fetchInfoFromDataBase(projectId);
 		if(p_Info == null) {
 			p_Info = new String[1];
@@ -220,7 +224,71 @@ public class OptionsMenu extends JFrame {
 				// WelcomeCassandra ws=new WelcomeCassandra(projectId,userType);
 				
 				// Our Implementation --------------------------------------------------------------------
+				if (info_selected != null && !info_selected.trim().isEmpty()) {
+					com.FinalInfo.DatabaseConnection dbcon = new com.FinalInfo.DatabaseConnection();
+					Connection con = dbcon.getConnection(projectId);
+					dbQueries dbQ = new dbQueries(con);
+					RequirementsClass rc = null;
+					try {
+						rc = dbQ.getInfo(info_selected);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						//e1.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Error in fetching Data Object", "Error Occured", 2);
+					}
 
+					try {
+						// Algorithm: Conversion to multi-dimensional schema
+
+						Fact F = RolapUtils.createFact(info_selected, rc.getAttributes());
+						RolapUtils.facts.add(F);
+
+						for (String category : rc.getCategories()) {
+							Dimension D = RolapUtils.createDimension(category);
+
+							if (!RolapUtils.checkDimensionExistence(D)) {
+								HashMap<String, HashMap<String, String>> categoryAttribute = rc.getCategory_attribute();
+								for (String categoryName : categoryAttribute.keySet()) {
+									if (categoryName.equals(category)) {
+										D.addAttribute(categoryAttribute.get(categoryName));
+									}
+								}
+								/* by default changeType = update as told by sir, therefore skipping if condition */
+								F.linkDimension(D);
+								RolapUtils.dimensions.add(D);
+							} else {
+								F.linkDimension(D);
+							}
+
+							HashMap<String, ArrayList<String>> containedCategories = rc.getCategory_subcategory();
+							for (String ccName : containedCategories.keySet()) {
+								Dimension SD = RolapUtils.createSubDimension(ccName);
+								if (!RolapUtils.checkSubDimensionExistence(SD)) {
+									HashMap<String, HashMap<String, String>> categoryAttribute = rc.getCategory_attribute();
+									for (String categoryName : categoryAttribute.keySet()) {
+										if (categoryName.equals(ccName)) {
+											SD.addAttribute(categoryAttribute.get(categoryName));
+										}
+									}
+									/* by default changeType = update as told by sir, therefore skipping if condition */
+									D.linkSubDimension(SD);
+									RolapUtils.dimensions.add(D);
+								} else {
+									D.linkSubDimension(SD);
+								}
+							}
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Error in converting to ROLAP", "Error Occured", 2);
+					}
+
+					// writing rolap schema to file
+					RolapUtils.writeRolapSchemaToFile();
+
+				} else {
+					JOptionPane.showMessageDialog(contentPane, "Please select Data Object", "No Data Object selected", 1);
+				}
 				// ---------------------------------------------------------------------------------------
 				
 				// wc.main(new String [1]);

@@ -1,0 +1,12 @@
+Fact:
+	jobdescription(
+		jd,
+		id
+	)
+
+Fact:
+	jobdescription(
+		jd,
+		id
+	)
+

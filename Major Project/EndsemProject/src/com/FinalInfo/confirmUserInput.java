@@ -290,8 +290,7 @@ public class confirmUserInput extends JFrame {
 		addListeners();
 	}
 	
-	public void FillInfo()
-	{
+	public void FillInfo() {
 		String inp=rc.getp_info();
 		if(inp!=null && !inp.trim().isEmpty())
 			txtInfo.setText(rc.getp_info());

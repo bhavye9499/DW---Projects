@@ -526,7 +526,7 @@ public class dbQueries {
 		//System.out.println("category and subcategory table");
 		try
 		{
-			HashMap<String,ArrayList<String>> cat_subCat= new HashMap<String,ArrayList<String>> ();
+			HashMap<String,ArrayList<String>> cat_subCat= new HashMap<>();
 			ArrayList<String> categories=new ArrayList<String>(); 
 			sql="SELECT category_name,subcategory_of from category_subcategory where p_info=?";
 			pst = con.prepareStatement(sql);
