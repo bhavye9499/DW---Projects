@@ -17,16 +17,15 @@ import java.util.HashMap;
 public class dbQueries {
 
 	private Connection con;
-	private String p_id="";
-	private boolean inserted=true;
-	boolean duplicateInfoName=false;
+	private String p_id = "";
+	private boolean inserted = true;
+	boolean duplicateInfoName = false;
 	public dbQueries(Connection con)
 	{
-		this.con=con;
+		this.con = con;
 	}
 
-	public boolean  InsertDataIntoDatabase(RequirementsClass rc)
-	{
+	public boolean InsertDataIntoDatabase(RequirementsClass rc) {
 		java.sql.PreparedStatement pst;
 
 		// insert in p_info table
@@ -52,8 +51,7 @@ public class dbQueries {
 			duplicateInfoName=true;
 
 		} 
-		catch(SQLIntegrityConstraintViolationException e1)
-		{
+		catch(SQLIntegrityConstraintViolationException e1) {
 			e1.printStackTrace();
 			 inserted =false;
 		}
@@ -65,10 +63,7 @@ public class dbQueries {
 
 
 		// insert into category_subcategory
-		
-		try
-		{
-
+		try {
 			ArrayList<String> categories =rc.getCategories();
 
 			if(categories!=null && categories.size()>0)
@@ -90,15 +85,14 @@ public class dbQueries {
 			}
 
 
-		}catch(SQLException e)
-		{
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 			inserted= false;
 		}
-		
-		
-		try
-		{
+
+
+		try {
 			HashMap<String,ArrayList<String>> cat_subCat=rc.getCategory_subcategory();
 			if(cat_subCat!=null && cat_subCat.size()>0)
 			{
@@ -121,8 +115,8 @@ public class dbQueries {
 				}
 			}
 			
-		}catch(SQLException e)
-		{
+		}
+		catch(SQLException e) {
 			e.printStackTrace();
 			inserted=false;
 		}
@@ -228,11 +222,8 @@ public class dbQueries {
 //		}
 
 
-
 		// insert into infoAttribute
-
-		try
-		{
+		try {
 
 			HashMap<String,String> attributes=rc.getAttributes();
 			if(attributes!=null && attributes.size()>0)
@@ -248,15 +239,14 @@ public class dbQueries {
 				}
 			}
 
-		}catch(Exception e)
-		{
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 		}
 
 
 		//category_attributes
-		try
-		{
+		try {
 			HashMap<String, HashMap<String, String>>category_attribute=	rc.getCategory_attribute();
 			if(category_attribute!=null && category_attribute.size()>0)
 			{
@@ -297,16 +287,15 @@ public class dbQueries {
 
 			}
 
-		}catch(Exception e)
-		{
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 			inserted= false;
 		}
 
 
 		//aggregate
-		try
-		{
+		try {
 			ArrayList<ArrayList<String>> aggr=rc.getAggregateInfo();
 			int id=1;
 			int computed_from_id=1;
@@ -410,51 +399,42 @@ public class dbQueries {
 				}
 			}
 
-		}catch(Exception e)
-		{
+		}
+		catch(Exception e) {
 			e.printStackTrace();
 			inserted= false;
 		}
 
 
-
 		return inserted;
-
 	}
 
-	public boolean checkforValue(String s)
-	{
+	public boolean checkforValue(String s) {
 		if(s==null || s.equals(" ") || s.length()==0 ||s.equals(""))
 			return false;
-
 		return true;
 	}
 
-
-	public String [] fetch_pInfo_FromDataBase(String projectID)
-	{
+	public String [] fetch_pInfo_FromDataBase(String projectID) {
 		java.sql.PreparedStatement pst;
 		Statement stmt;
 		ArrayList<String> pInfo_list=new ArrayList<String>();
 		String [] p_info_list = null;
 		String sql = "select p_info from p_info";
 
-
 		try {
-			pst= con.prepareStatement(sql);
+			pst = con.prepareStatement(sql);
 			stmt = con.createStatement();
 			ResultSet  resultset = stmt.executeQuery(sql);
-			if(resultset!=null)
-			{
+			if (resultset!=null) {
 				while (resultset.next()) {
-					String result=resultset.getString("p_info");
+					String result = resultset.getString("p_info");
 					pInfo_list.add(result);
 				}
 			}
 
-			p_info_list=new String[pInfo_list.size()];
-			for(int i=0;i<pInfo_list.size();i++)
-			{
+			p_info_list = new String[pInfo_list.size()];
+			for (int i = 0; i < pInfo_list.size(); i++) {
 				p_info_list[i]=pInfo_list.get(i);
 			}
 
@@ -466,9 +446,7 @@ public class dbQueries {
 		return p_info_list;
 	}
 
-
-	public RequirementsClass  getInfo(String info) throws SQLException
-	{
+	public RequirementsClass getInfo(String info) throws SQLException {
 		System.out.println(" GETTING INFO FROM DB.....");
 		RequirementsClass rc= new RequirementsClass(p_id, info);
 		java.sql.PreparedStatement pst;
@@ -508,7 +486,8 @@ public class dbQueries {
 
 			pst.close();
 
-		} catch (SQLException e) {
+		}
+		catch (SQLException e) {
 			// TODO Auto-generated catch block
 		}
 
@@ -842,9 +821,7 @@ public class dbQueries {
 
 	}
 
-
-	public void deleteFromdatabase(String p_info)
-	{
+	public void deleteFromdatabase(String p_info) {
 		System.out.println("Delete from Database Method");
 		java.sql.PreparedStatement pst;
 		try
@@ -872,8 +849,7 @@ public class dbQueries {
 
 	}
 
-	public void deletefromTable(String p_info,String table_name)
-	{
+	public void deletefromTable(String p_info,String table_name) {
 		
 		java.sql.PreparedStatement pst;
 
@@ -892,8 +868,7 @@ public class dbQueries {
 	}
 
 	@SuppressWarnings("null")
-	public boolean checkNullForString(String inp)
-	{
+	public boolean checkNullForString(String inp) {
 		//		if(inp==null)
 		//		{
 		//			return false;
@@ -908,8 +883,7 @@ public class dbQueries {
 		return false;
 	}
 
-	public boolean checkNullForInt(int inp)
-	{
+	public boolean checkNullForInt(int inp) {
 		if(inp>0)
 		{
 			return true;
@@ -917,6 +891,5 @@ public class dbQueries {
 
 		return false;
 	}
-
 
 }

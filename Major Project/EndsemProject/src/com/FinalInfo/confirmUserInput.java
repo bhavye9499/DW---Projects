@@ -307,18 +307,14 @@ public class confirmUserInput extends JFrame {
 		inp=rc.getDurationFreq();
 		if(inp!=null && !inp.trim().isEmpty())
 			lblDurationFreq.setText(inp);
-		
+
 		
 		// fill attribute table
 		HashMap<String,String> Attributes=rc.getAttributes();
-		if(Attributes.size()>0)
-		{
-			for(String attr:Attributes.keySet())
-			{
+		if(Attributes.size()>0) {
+			for(String attr:Attributes.keySet()) {
 				attribute_model.addRow(new Object[]{attr,Attributes.get(attr)});
-				
 			}
-			
 		}
 		
 		
@@ -328,49 +324,34 @@ public class confirmUserInput extends JFrame {
 		copy_categories.addAll(categories);
 		HashMap<String,ArrayList<String>> cat_subCat=rc.getCategory_subcategory();
 		String cat="";
-		if(copy_categories!=null && copy_categories.size()>0)
-		{
-			for(int i=0;i<copy_categories.size();i++)
-			{
+		if(copy_categories!=null && copy_categories.size()>0) {
+			for(int i=0;i<copy_categories.size();i++) {
 				cat=copy_categories.get(i);
-				if(cat_subCat.containsKey(cat))
-				{
+				if(cat_subCat.containsKey(cat)) {
 					ArrayList<String> subCat=cat_subCat.get(cat);
 					category_model.addRow(new Object[]{cat,String.valueOf(" ")});
-					for(int j=0;j<subCat.size();j++)
-					{
+					for(int j=0;j<subCat.size();j++) {
 						category_model.addRow(new Object[]{subCat.get(j),cat});
 						copy_categories.remove(subCat.get(j));
 					}
-					
 				}
-				else
-				{
+				else {
 					category_model.addRow(new Object[]{cat,String.valueOf(" ")});
 				}
 			}
 		}
-		
-		
-		
+
 		//category attributes
 		 HashMap<String,HashMap<String,String>> cat_attr=rc.getCategory_attribute();
-		 if(cat_attr!=null && cat_attr.size()>0)
-		 {
-			 for(String cate:cat_attr.keySet())
-			 {
+		 if(cat_attr!=null && cat_attr.size()>0) {
+			 for(String cate:cat_attr.keySet()) {
 				 HashMap<String,String> inner=cat_attr.get(cate);
-				 if(inner!=null && inner.size()>0)
-				 {
-					 for(String attri:inner.keySet())
-					 {
+				 if(inner!=null && inner.size()>0) {
+					 for(String attri:inner.keySet()) {
 						 category_attribute_model.addRow(new Object[]{cate,attri,inner.get(attri)});
 					 }
 				 }
-				 
-				 
 			 }
-			
 		 }
 		//Aggegrate Info
 		ArrayList<ArrayList<String>> aggr=rc.getAggregateInfo();
@@ -389,32 +370,28 @@ public class confirmUserInput extends JFrame {
 		}
 		
 	}
+
 	public void addListeners()
 	{
-		
-		
 		btnSave.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+
+				DatabaseConnection dbcon = new DatabaseConnection();
 				
-				DatabaseConnection dbcon= new DatabaseConnection();
-				
-				com.FinalInfo.dbQueries dbObj=new dbQueries(dbcon.getConnection(rc.getProjectId()));
-				if(source.equalsIgnoreCase("modify"))
+				com.FinalInfo.dbQueries dbObj = new dbQueries(dbcon.getConnection(rc.getProjectId()));
+				if(source.equalsIgnoreCase("modify")) {
 				   dbObj.deleteFromdatabase(rc.getp_info());
-				
-				boolean Insertsuc=dbObj.InsertDataIntoDatabase(rc);
-				if(Insertsuc && dbObj.duplicateInfoName==true)
-				{
+				}
+
+				boolean Insertsuc = dbObj.InsertDataIntoDatabase(rc);
+				if(Insertsuc && dbObj.duplicateInfoName==true) {
 					JOptionPane.showMessageDialog(contentPane, "Saved Successfully", "Data Save Status", 2);
 					dispose();
 					Frame frame[]=Frame.getFrames();
-					if(frame!=null)
-					{	
-						for(Frame f:frame)
-						{
+					if(frame!=null) {
+						for(Frame f:frame) {
 							f.dispose();
 						}
 					}
@@ -422,19 +399,12 @@ public class confirmUserInput extends JFrame {
 					WelcomeScreen ws=new WelcomeScreen();
 					ws.setVisible(true);
 				}
-				else if(Insertsuc==false)
-				{
+				else if(Insertsuc==false) {
 					JOptionPane.showMessageDialog(contentPane, "Can not save Data! Error Occured. Retry", "Data Save Status", 1);
 				}
-				else if(dbObj.duplicateInfoName==false)
-				{
+				else if(dbObj.duplicateInfoName==false) {
 					JOptionPane.showMessageDialog(contentPane, "This Information Name already exist \n Try different  ", "Data Save Status", 2);
 				}
-					
-					
-				
-				
-				
 			}
 		});
 		

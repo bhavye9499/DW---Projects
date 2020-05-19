@@ -192,27 +192,27 @@ public class DatabaseConnection {
 					" category_name VARCHAR(100) NOT NULL,"+
 					" attribute_name VARCHAR(100),"+
 					" dataType VARCHAR(100),"+
-					"category_id VARCHAR(100) NOT NULL,"+
+					" category_id VARCHAR(100) NOT NULL,"+
 					" PRIMARY KEY (category_id ,attribute_name ))";
 			//	" FOREIGN KEY (categegory_id) REFERENCES category_subcategory (categegory_id))";
 			System.out.println(sql);
 			stmt.executeUpdate(sql);
 			
 			sql = "ALTER TABLE category_attributes"+
-					" ADD CONSTRAINT cat_attr_fk"+
-					" FOREIGN KEY (category_id) REFERENCES category_subcategory (category_id)"+
-					" ON DELETE CASCADE"+
+					" ADD CONSTRAINT cat_attr_fk" +
+					" FOREIGN KEY (category_id) REFERENCES category_subcategory (category_id)" +
+					" ON DELETE CASCADE" +
 					" ON UPDATE CASCADE";
 			System.out.println(sql);
 			stmt.executeUpdate(sql);
 
-			sql = "CREATE TABLE aggregate"+
-					" (p_info VARCHAR(100) NOT NULL, "+
-					" aggregate_id INT NOT NULL,"+
-					" aggregate_name VARCHAR(100),"+
-					" history_freq VARCHAR(45) NULL,"+
-					" history_durationNum INT NULL,"+
-					" history_duration VARCHAR(45) NULL,"+
+			sql = "CREATE TABLE aggregate" +
+					" (p_info VARCHAR(100) NOT NULL, " +
+					" aggregate_id INT NOT NULL," +
+					" aggregate_name VARCHAR(100)," +
+					" history_freq VARCHAR(45) NULL," +
+					" history_durationNum INT NULL," +
+					" history_duration VARCHAR(45) NULL," +
 					" PRIMARY KEY(p_info ,aggregate_id))";
 			System.out.println(sql);
 			stmt.executeUpdate(sql);
@@ -228,11 +228,11 @@ public class DatabaseConnection {
 			System.out.println(sql);
 			stmt.executeUpdate(sql);
 
-			sql = "ALTER TABLE aggregate_computedFrom"+
-					" ADD CONSTRAINT aggr_computedfrom_fk"+
-					" FOREIGN KEY (p_info,aggregate_id) REFERENCES aggregate (p_info,aggregate_id)"+
-					" ON DELETE CASCADE"+
-					" ON UPDATE CASCADE";
+			sql = "ALTER TABLE aggregate_computedFrom" +
+					" ADD CONSTRAINT aggr_computedfrom_fk" +
+					" FOREIGN KEY (p_info,aggregate_id) REFERENCES aggregate (p_info,aggregate_id)" +
+					" ON DELETE CASCADE" +
+					" ON UPDATE CASCADE" ;
 			System.out.println(sql);
 			stmt.executeUpdate(sql);
 				

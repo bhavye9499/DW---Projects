@@ -85,9 +85,9 @@ public class OptionsMenu extends JFrame {
 		contentPane.add(lblProject);
 		
 		
-		String p_Info[]=fetchInfoFromDataBase(projectId);
-		if(p_Info==null) {
-			p_Info=new String[1];
+		String p_Info[] = fetchInfoFromDataBase(projectId);
+		if(p_Info == null) {
+			p_Info = new String[1];
 			p_Info[1]="";
 		}
 		
@@ -108,7 +108,7 @@ public class OptionsMenu extends JFrame {
 		btnBack.setBounds(212, 294, 97, 25);
 		contentPane.add(btnBack);
 		
-		btnProceedToMake = new JButton("End Sem ");
+		btnProceedToMake = new JButton("Proceed to ROLAP");
 		btnProceedToMake.setFont(new Font("Dialog", Font.BOLD, 13));
 		btnProceedToMake.setBounds(119, 228, 302, 25);
 		contentPane.add(btnProceedToMake);
@@ -136,8 +136,7 @@ public class OptionsMenu extends JFrame {
 		addListeners(projectId,userType);
 	}
 	
-	public void addListeners(String projectId,String userType)
-	{
+	public void addListeners(String projectId,String userType) {
 		btnCreate.addActionListener(new ActionListener() {
 			
 			@Override
@@ -159,8 +158,7 @@ public class OptionsMenu extends JFrame {
 				dispose();
 			}
 		});
-		
-		
+
 		comboBox.addItemListener(new ItemListener() {
 
 
@@ -185,20 +183,18 @@ public class OptionsMenu extends JFrame {
 
 			}
 		});
+
 		btnViewInfomation.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(info_selected!=null &&!info_selected.trim().isEmpty())
-				{
-					com.FinalInfo.DatabaseConnection dbcon=new com.FinalInfo.DatabaseConnection();
-					Connection con=dbcon.getConnection(projectId);
-					dbQueries dbQ=new dbQueries(con);
+				if (info_selected != null && !info_selected.trim().isEmpty()) {
+					com.FinalInfo.DatabaseConnection dbcon = new com.FinalInfo.DatabaseConnection();
+					Connection con = dbcon.getConnection(projectId);
+					dbQueries dbQ = new dbQueries(con);
 					try {
-						
-						RequirementsClass rc=dbQ.getInfo(info_selected);
-						confirmUserInput cu=new confirmUserInput(rc,"view");
+						RequirementsClass rc = dbQ.getInfo(info_selected);
+						confirmUserInput cu = new confirmUserInput(rc,"view");
 						cu.setVisible(true);
 						dispose();
 					} catch (SQLException e1) {
@@ -207,32 +203,31 @@ public class OptionsMenu extends JFrame {
 						JOptionPane.showMessageDialog(contentPane, "Error in fetching Data Object", "Error Occured", 2);
 					}
 				}
-				else
-				{
+				else {
 					JOptionPane.showMessageDialog(contentPane, "Please select Data Object", "No Data Object selected", 1);
 				}
-				
 			}
 		});
 		
 		btnProceedToMake.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
 				//JOptionPane.showConfirmDialog(contentPane, "Are you sure you want ", title, optionType)
 				btnCreate.setEnabled(false);
 				btnModify.setEnabled(false);
 				btnViewInfomation.setEnabled(false);
-//				WelcomeCassandra ws=new WelcomeCassandra(projectId,userType);
+				// WelcomeCassandra ws=new WelcomeCassandra(projectId,userType);
 				
+				// Our Implementation --------------------------------------------------------------------
+
+				// ---------------------------------------------------------------------------------------
 				
-				
-				//wc.main(new String [1]);
+				// wc.main(new String [1]);
 				
 			}
 		});
+
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -254,8 +249,7 @@ public class OptionsMenu extends JFrame {
 		});
 	}
 	
-	public String [] fetchInfoFromDataBase(String projectID)
-	{
+	public String [] fetchInfoFromDataBase(String projectID) {
 		com.FinalInfo.DatabaseConnection dbcon=new com.FinalInfo.DatabaseConnection();
 		Connection conn=dbcon.getConnection(projectID);
 		dbQueries dbq=new dbQueries(conn);

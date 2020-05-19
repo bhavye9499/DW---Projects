@@ -5,13 +5,13 @@ import java.util.HashMap;
 
 public class RequirementsClass {
 	
-	private String projectId="";
-	private String p_info="";
-	private String Frequency="";
-	private int durationNum=-1;
-	private String durationFreq="";
+	private String projectId = "";
+	private String p_info = "";
+	private String Frequency = "";
+	private int durationNum = -1;
+	private String durationFreq = "";
 	private HashMap<String,ArrayList<String>> category_subcategoriesHM;
-	private  HashMap<String,String>Attributes;
+	private HashMap<String,String> Attributes;
 	private ArrayList<ArrayList<String>> aggregateInfo;
 	private HashMap<String, HashMap<String, String>> category_attribute;
 	private ArrayList<String> Categories;
