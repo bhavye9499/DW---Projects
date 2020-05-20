@@ -11,7 +11,6 @@ import java.util.Set;
 
 public class RolapUtils {
 
-	private static String projectID;
 	public static ArrayList<Fact> facts = new ArrayList<>();
 	public static ArrayList<Dimension> dimensions = new ArrayList<>();
 
@@ -55,9 +54,7 @@ public class RolapUtils {
 	}
 
 	private static void writeSubDimension(BufferedWriter bw, Dimension SD) throws IOException {
-		bw.append("\t\t");
-		bw.append(SD.getName());
-		bw.append(" (\n");
+		bw.append("\t\t".concat(SD.getName()).concat(" (\n"));
 		int sz = SD.getAttributes().size();
 		int idx = 0;
 		String lastAttribute = null;
@@ -71,7 +68,7 @@ public class RolapUtils {
 		}
 		assert lastAttribute != null;
 		bw.append("\t\t\t".concat(lastAttribute).concat("\n"));
-		bw.append("\t\t)\n\n");
+		bw.append("\t\t)\n");
 	}
 
 	private static void writeDimension(BufferedWriter bw, Dimension D) throws IOException {
@@ -89,7 +86,7 @@ public class RolapUtils {
 		}
 		assert lastAttribute != null;
 		bw.append("\t\t".concat(lastAttribute).concat("\n"));
-		bw.append("\t)\n\n");
+		bw.append("\t)\n");
 
 		if (D.getSubDimensions().size() > 0) {
 			bw.append("\tSubDimension(s):\n");
@@ -97,6 +94,7 @@ public class RolapUtils {
 				writeSubDimension(bw, sd);
 			}
 		}
+		bw.append("\n");
 	}
 
 	private static void writeFact(BufferedWriter bw, Fact F) throws IOException {
@@ -117,7 +115,7 @@ public class RolapUtils {
 		bw.append("\t)\n\n");
 	}
 
-	public static void writeRolapSchemaToFile() {
+	public static void writeRolapSchemaToFile(String projectID) {
 		BufferedWriter bw = openFile(projectID + "_rolap.txt");
 		assert (bw != null);
 		try {
@@ -150,13 +148,6 @@ public class RolapUtils {
 		// }
 	}
 
-	public static String getProjectID() {
-		return projectID;
-	}
-
-	public static void setProjectID(String projectID) {
-		RolapUtils.projectID = projectID;
-	}
 }
 
 class Fact {

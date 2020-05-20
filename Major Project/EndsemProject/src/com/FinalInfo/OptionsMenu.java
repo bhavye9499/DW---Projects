@@ -86,9 +86,6 @@ public class OptionsMenu extends JFrame {
 		lblProject.setBounds(119, 47, 134, 23);
 		contentPane.add(lblProject);
 
-		// Our Implementation ---------------------------------------------------------------------
-		RolapUtils.setProjectID(projectId);
-		// ----------------------------------------------------------------------------------------
 		String p_Info[] = fetchInfoFromDataBase(projectId);
 		if(p_Info == null) {
 			p_Info = new String[1];
@@ -224,23 +221,23 @@ public class OptionsMenu extends JFrame {
 				// WelcomeCassandra ws=new WelcomeCassandra(projectId,userType);
 				
 				// Our Implementation --------------------------------------------------------------------
-				if (info_selected != null && !info_selected.trim().isEmpty()) {
-					com.FinalInfo.DatabaseConnection dbcon = new com.FinalInfo.DatabaseConnection();
-					Connection con = dbcon.getConnection(projectId);
-					dbQueries dbQ = new dbQueries(con);
+				com.FinalInfo.DatabaseConnection dbcon = new com.FinalInfo.DatabaseConnection();
+				Connection con = dbcon.getConnection(projectId);
+				dbQueries dbQ = new dbQueries(con);
+				String[] dataObjects = dbQ.fetch_pInfo_FromDataBase(projectId);
+				for (String dataObjectName : dataObjects) {
 					RequirementsClass rc = null;
 					try {
-						rc = dbQ.getInfo(info_selected);
+						rc = dbQ.getInfo(dataObjectName);
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
-						//e1.printStackTrace();
-						JOptionPane.showMessageDialog(contentPane, "Error in fetching Data Object", "Error Occured", 2);
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(contentPane, "Error in fetching Data Object", "Error Occurred", 2);
 					}
 
 					try {
 						// Algorithm: Conversion to multi-dimensional schema
-
-						Fact F = RolapUtils.createFact(info_selected, rc.getAttributes());
+						Fact F = RolapUtils.createFact(dataObjectName, rc.getAttributes());
 						RolapUtils.facts.add(F);
 
 						for (String category : rc.getCategories()) {
@@ -287,7 +284,6 @@ public class OptionsMenu extends JFrame {
 									}
 									/* by default changeType = update as told by sir, therefore skipping if condition */
 									D.linkSubDimension(SD);
-									RolapUtils.dimensions.add(D);
 								} else {
 									D.linkSubDimension(D.getSubDimensions().get(sdIndex));
 								}
@@ -299,10 +295,8 @@ public class OptionsMenu extends JFrame {
 					}
 
 					// writing rolap schema to file
-					RolapUtils.writeRolapSchemaToFile();
+					RolapUtils.writeRolapSchemaToFile(projectId);
 
-				} else {
-					JOptionPane.showMessageDialog(contentPane, "Please select Data Object", "No Data Object selected", 1);
 				}
 				// ---------------------------------------------------------------------------------------
 				
