@@ -87,7 +87,7 @@ public class OptionsMenu extends JFrame {
 		contentPane.add(lblProject);
 
 		// Our Implementation ---------------------------------------------------------------------
-		RolapUtils.projectID = projectId;
+		RolapUtils.setProjectID(projectId);
 		// ----------------------------------------------------------------------------------------
 		String p_Info[] = fetchInfoFromDataBase(projectId);
 		if(p_Info == null) {
@@ -245,36 +245,51 @@ public class OptionsMenu extends JFrame {
 
 						for (String category : rc.getCategories()) {
 							Dimension D = RolapUtils.createDimension(category);
-
-							if (!RolapUtils.checkDimensionExistence(D)) {
-								HashMap<String, HashMap<String, String>> categoryAttribute = rc.getCategory_attribute();
-								for (String categoryName : categoryAttribute.keySet()) {
+							int dIndex = RolapUtils.checkDimensionExistence(D);
+							if (dIndex == -1) {
+								HashMap<String, HashMap<String, String>> categoryAttributes = rc.getCategory_attribute();
+								for (String categoryName : categoryAttributes.keySet()) {
 									if (categoryName.equals(category)) {
-										D.addAttribute(categoryAttribute.get(categoryName));
+										D.addAttribute(categoryAttributes.get(categoryName));
 									}
 								}
 								/* by default changeType = update as told by sir, therefore skipping if condition */
 								F.linkDimension(D);
 								RolapUtils.dimensions.add(D);
 							} else {
-								F.linkDimension(D);
+								F.linkDimension(RolapUtils.dimensions.get(dIndex));
 							}
 
-							HashMap<String, ArrayList<String>> containedCategories = rc.getCategory_subcategory();
-							for (String ccName : containedCategories.keySet()) {
+							// finding all the containedCategories
+							HashMap<String, ArrayList<String>> categoryContainedIn = rc.getCategory_subcategory();
+							ArrayList<String> containedCategories = new ArrayList<>();
+							for (String ccName : categoryContainedIn.keySet()) {
+								for (String categoryName : categoryContainedIn.get(ccName)) {
+									if (categoryName.equals(category)) {
+										containedCategories.add(ccName);
+										break;
+									}
+								}
+							}
+							// System.out.println("Contained Categories: \n");
+							// for (String ccName : containedCategories) {
+							// 	System.out.println(ccName);
+							// }
+							for (String ccName : containedCategories) {
 								Dimension SD = RolapUtils.createSubDimension(ccName);
-								if (!RolapUtils.checkSubDimensionExistence(SD)) {
-									HashMap<String, HashMap<String, String>> categoryAttribute = rc.getCategory_attribute();
-									for (String categoryName : categoryAttribute.keySet()) {
+								int sdIndex = D.checkSubDimensionExistence(SD);
+								if (sdIndex == -1) {
+									HashMap<String, HashMap<String, String>> categoryAttributes = rc.getCategory_attribute();
+									for (String categoryName : categoryAttributes.keySet()) {
 										if (categoryName.equals(ccName)) {
-											SD.addAttribute(categoryAttribute.get(categoryName));
+											SD.addAttribute(categoryAttributes.get(categoryName));
 										}
 									}
 									/* by default changeType = update as told by sir, therefore skipping if condition */
 									D.linkSubDimension(SD);
 									RolapUtils.dimensions.add(D);
 								} else {
-									D.linkSubDimension(SD);
+									D.linkSubDimension(D.getSubDimensions().get(sdIndex));
 								}
 							}
 						}
