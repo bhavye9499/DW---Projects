@@ -124,7 +124,7 @@ public class RolapUtils {
 				bw.append("\nFact:\n");
 				writeFact(bw, f);
 				bw.append("Dimension(s):\n");
-				for (Dimension d : dimensions) {
+				for (Dimension d : f.getLinkedDimensions()) {
 					writeDimension(bw, d);
 				}
 			}
