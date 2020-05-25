@@ -1,0 +1,5 @@
+company_id,student_id,date_time,work_city,home_city,distance
+1,2,2015-11-12 04:35:55,Delhi,Bangaluru,1000
+2,1,2016-07-22 17:58:37,Mumbai,Delhi,800
+3,3,2016-09-04 12:51:21,Pune,Jaipur,600
+4,2,2017-11-10 06:04:11,Delhi,Mumbai,800

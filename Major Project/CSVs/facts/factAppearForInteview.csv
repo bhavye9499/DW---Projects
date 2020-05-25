@@ -1,0 +1,5 @@
+company_id,student_id,date_time,student_gpa,ctc,work_city,is_selected
+2,3,2016-07-22 17:58:37,7,100000,Mumbai,No
+1,1,2016-09-04 12:51:21,7.5,300000,Delhi,Yes
+3,2,2018-03-16 10:27:59,8,200000,Pune,Yes
+1,4,2015-11-12 04:35:55,6,100000,Delhi,No
